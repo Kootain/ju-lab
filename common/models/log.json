@@ -1,0 +1,32 @@
+{
+  "name": "Log",
+  "base": "PersistedModel",
+  "strict": false,
+  "idInjection": false,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "id": {
+      "type": "number",
+      "id": true,
+      "required": true
+    },
+    "item_id": {
+      "type": "number",
+      "id": true,
+      "comments": "称上物品id"
+    },
+    "full": {
+      "type": "number",
+      "comments": "满重重量"
+    },
+    "propertyName30": {
+      "type": "string"
+    }
+  },
+  "validations": [],
+  "relations": {},
+  "acls": [],
+  "methods": {}
+}

@@ -1,0 +1,41 @@
+{
+  "name": "Scale",
+  "base": "PersistedModel",
+  "strict": false,
+  "idInjection": false,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "id": {
+      "type": "number",
+      "id": true,
+      "required": true
+    },
+    "sid": {
+      "type": "string",
+      "required": true,
+      "comments": "称SID"
+    },
+    "name": {
+      "type": "string",
+      "required": false,
+      "comments": "称名称"
+    },
+    "pos": {
+      "type": "string",
+      "comments": "称摆放位置坐标，'x,y'左下角为1,1"
+    },
+    "propertyName43": {
+      "type": "string"
+    },
+    "log_id": {
+      "type": "number",
+      "comments": "称上物品记录id(外键 Log)"
+    }
+  },
+  "validations": [],
+  "relations": {},
+  "acls": [],
+  "methods": {}
+}

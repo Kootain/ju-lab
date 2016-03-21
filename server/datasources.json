@@ -1,0 +1,24 @@
+{
+  "db": {
+    "name": "db",
+    "connector": "memory"
+  },
+  "infoDB": {
+    "host": "120.24.174.100",
+    "port": 3306,
+    "database": "ju_lab",
+    "password": "zhangtianyi9425",
+    "name": "infoDB",
+    "connector": "mysql",
+    "user": "root"
+  },
+  "routerold": {
+    "host": "120.24.174.100",
+    "port": 3306,
+    "database": "ju_web_server",
+    "password": "zhangtianyi9425",
+    "name": "routerold",
+    "user": "root",
+    "connector": "mysql"
+  }
+}
