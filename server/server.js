@@ -1,6 +1,7 @@
 var loopback = require('loopback');
 var boot = require('loopback-boot');
 
+
 var app = module.exports = loopback();
 
 app.start = function() {
@@ -25,3 +26,6 @@ boot(app, __dirname, function(err) {
   if (require.main === module)
     app.start();
 });
+
+var scale = require('./module/scale/onlineScale')(app);
+app.scaleAction = scale;

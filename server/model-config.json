@@ -51,7 +51,15 @@
     "$resolved": true
   },
   "Log": {
-    "dataSource": "db",
-    "public": true
+    "dataSource": "infoDB",
+    "public": true,
+    "$promise": {},
+    "$resolved": true
+  },
+  "Weight": {
+    "dataSource": "infoDB",
+    "public": true,
+    "$promise": {},
+    "$resolved": true
   }
 }

@@ -1,5 +1,5 @@
 {
-  "name": "Log",
+  "name": "Weight",
   "base": "PersistedModel",
   "strict": false,
   "idInjection": false,
@@ -7,14 +7,21 @@
     "validateUpsert": true
   },
   "properties": {
-    "full": {
+    "weight": {
       "type": "number",
-      "comments": "满重重量"
+      "required": true
+    },
+    "log_id": {
+      "type": "number",
+      "required": true
     },
     "item_id": {
       "type": "number",
-      "id": true,
-      "comments": "称上物品id"
+      "required": true
+    },
+    "time": {
+      "type": "date",
+      "required": true
     }
   },
   "validations": [],
