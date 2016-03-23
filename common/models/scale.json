@@ -7,15 +7,6 @@
     "validateUpsert": true
   },
   "properties": {
-    "name": {
-      "type": "string",
-      "required": false,
-      "comments": "称名称"
-    },
-    "pos": {
-      "type": "string",
-      "comments": "称摆放位置坐标，'x,y'左下角为1,1"
-    },
     "log_id": {
       "type": "number",
       "comments": "称上物品记录id(外键 Log)"
@@ -28,6 +19,16 @@
     "is_online": {
       "type": "number",
       "comments": "称是否在线"
+    },
+    "name": {
+      "type": "string",
+      "required": true,
+      "comments": "称名称"
+    },
+    "pos": {
+      "type": "string",
+      "required": true,
+      "comments": "称摆放位置坐标，'x,y'左下角为1,1"
     }
   },
   "validations": [],
