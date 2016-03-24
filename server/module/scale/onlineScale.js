@@ -51,11 +51,11 @@ module.exports = function(server) {
           delete unregisteredList[key];
         }
       }
-      for(var i = unregisteredList.length;i>= 0;i--){
-        if (!unregisteredList[i]) unregisteredList.splice(i,1);
-      }
       return e;
     });
+    for(var i = unregisteredList.length-1;i>= 0;i--){
+      if (unregisteredList[i] === undefined) unregisteredList.splice(i,1);
+    }
   }
   
   var getRegisterData = function(){
