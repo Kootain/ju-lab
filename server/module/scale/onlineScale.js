@@ -95,7 +95,8 @@ module.exports = function(server) {
   getRegisterData();
 
   var loop = setInterval(checkChange, TIMEOUT, [null,registeredList]);
-  //秤数据改变监听维护列表
+  
+  //秤配置改变监听维护列表
   mScale.observe('after save', function updateOnlineList(ctx, next) {
      getRegisterData();
      next();
