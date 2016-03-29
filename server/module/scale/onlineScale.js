@@ -6,20 +6,24 @@ var Scale = require('../../model/Scale');
 var TIMEOUT = 2000,
     tools={}
 var a = 0;
-tools.isEqual = function(a, b) {
+tools.isChange = function(a, b) {     //判断列表是否变更，0无变更，1设备更新，2重量更新
   var alen = a.length,
       blen = b.length,
       index = 'sid',
-      value = 'weight'
+      value = 'weight',
+      flag = 0
   if(alen!=blen){
-    return false;
+    return 1;
   }else{
     for(var i in a){
-      if(a[i][index] != b[i][index] ){
-        return false;
+      if(a[i][index] != b[i][index]){
+        return 1;
+      }
+      if(a[i][value] != b[i][value]){
+        flag = 2;
       }
     }
-    return true;
+    return flag;
   }
 }
 
@@ -73,7 +77,7 @@ module.exports = function(server) {
   var registerScale = function(data,cb){
     mScale.create(data,function(err,data){
       if(!err){
-        if(cb) cb(err,cb);
+        if(cb) cb(err,data);
       }else{
         if(cb) cb(err,data);
       }
@@ -83,12 +87,18 @@ module.exports = function(server) {
   var checkChange = function(){
     a++;
     var newData = (a<2)?[{sid:'11',weight:1.0},{sid:'12',weigth:2.0}]:[{sid:'11',weight:1.0},{sid:'13',weigth:2.0}]; //todo
-    if(!tools.isEqual(newData,originData)){
+    var change = tools.isChange(newData,originData);
+    if(change == 1){
       originData = newData;
       getList(null,registeredList);
       console.log('change scaleList',registeredList,unregisteredList);
-    }else{
+    }
+    if(change == 0){
       console.log('noting change on scalelist',registeredList,unregisteredList);
+    }
+    if(change == 2){
+      //todo 重量变换通知
+      console.log('change weight')
     }
   }
 
