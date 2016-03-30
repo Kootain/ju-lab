@@ -3,15 +3,20 @@
 *
 */
 var Scale = require('../../model/Scale');
-var TIMEOUT = 2000,
-    tools={}
-var a = 0;
-tools.isChange = function(a, b) {     //判断列表是否变更，0无变更，1设备更新，2重量更新
+var Devices = require('./Devices')();
+var registeredList = [],      //在线已注册称列表
+    unregisteredList = [],  //未注册陈列表
+    originData = [],      //在线称列表 todo
+    TIMEOUT = 2000,
+    tools={};
+//判断列表是否变更，0无变更，1设备更新，2重量更新
+//a是新数据,b为旧数据
+tools.isChange = function(a, b) {      
   var alen = a.length,
       blen = b.length,
       index = 'sid',
       value = 'weight',
-      flag = 0
+      flag = 0;
   if(alen!=blen){
     return 1;
   }else{
@@ -20,6 +25,11 @@ tools.isChange = function(a, b) {     //判断列表是否变更，0无变更，
         return 1;
       }
       if(a[i][value] != b[i][value]){
+        for(var j in registeredList){
+          if(registeredList[j][index] == a[i][index]){
+            registeredList[j][value] = a[i][value];
+          }
+        }
         flag = 2;
       }
     }
@@ -32,20 +42,18 @@ tools.clone = function(o){
 }
 
 module.exports = function(server) {
-  var registeredList = [],      //在线已注册称列表
-      unregisteredList = [],  //未注册陈列表
-      originData = [{sid:'11',weight:1.0},{sid:'12',weigth:2.0}],      //在线称列表 todo
-      mScale = server.models.Scale
+
+  var mScale = server.models.Scale;
 
   var getList = function(err,data){   //data:服务器上已注册的称，和originData在线列表求出已注册的在线状态和未注册
     if(err){
       console.log(err);
       return;
     }
-    var registered = data;
+    var registered = tools.clone(data);   //loopback 返回的对象保护,不能通过字面量添加属性
     var online = originData;
     unregisteredList = tools.clone(online);
-    console.log(unregisteredList);
+    console.log(registered);
     registeredList = registered.map(function(e){
       e.is_online = false;
       for(var key in online){
@@ -84,9 +92,9 @@ module.exports = function(server) {
     });
   }
 
-  var checkChange = function(){
-    a++;
-    var newData = (a<2)?[{sid:'11',weight:1.0},{sid:'12',weigth:2.0}]:[{sid:'11',weight:1.0},{sid:'13',weigth:2.0}]; //todo
+  //获取数据，并判断是否更新
+  var checkChange = function(newData){
+    newData = Devices.scale(); //todo
     var change = tools.isChange(newData,originData);
     if(change == 1){
       originData = newData;
@@ -97,6 +105,7 @@ module.exports = function(server) {
       console.log('noting change on scalelist',registeredList,unregisteredList);
     }
     if(change == 2){
+      originData = newData;
       //todo 重量变换通知
       console.log('change weight')
     }
