@@ -28,5 +28,5 @@ boot(app, __dirname, function(err) {
 });
 
 var scale = require('./module/scale/onlineScale')(app);
-var devices = require('./module/scale/Devices')(app);
+// var devices = require('./module/scale/Devices')(app);
 app.scaleAction = scale;

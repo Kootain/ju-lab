@@ -1,0 +1,25 @@
+{
+  "name": "Device",
+  "base": "PersistedModel",
+  "strict": false,
+  "idInjection": false,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "mac": {
+      "type": "string",
+      "required": true,
+      "comments": "设备mac"
+    },
+    "type": {
+      "type": "string",
+      "required": true,
+      "comments": "设备类型"
+    }
+  },
+  "validations": [],
+  "relations": {},
+  "acls": [],
+  "methods": {}
+}

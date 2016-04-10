@@ -7,28 +7,29 @@
     "validateUpsert": true
   },
   "properties": {
-    "log_id": {
-      "type": "number",
-      "comments": "称上物品记录id(外键 Log)"
-    },
-    "sid": {
-      "type": "string",
-      "required": true,
-      "comments": "称SID"
-    },
     "is_online": {
       "type": "number",
       "comments": "称是否在线"
     },
-    "name": {
+    "mac": {
       "type": "string",
       "required": true,
+      "comments": "mac地址"
+    },
+    "name": {
+      "type": "string",
+      "required": false,
       "comments": "称名称"
     },
     "pos": {
       "type": "string",
-      "required": true,
+      "required": false,
       "comments": "称摆放位置坐标，'x,y'左下角为1,1"
+    },
+    "sid": {
+      "type": "string",
+      "required": false,
+      "comments": "称SID"
     }
   },
   "validations": [],

@@ -2,7 +2,6 @@
 * 轮询 oringinData，若有更变 更新 onLineList,offlineList
 *
 */
-var Devices = require('./Devices')();
 var registeredList = [],      //在线已注册称列表
     unregisteredList = [],  //未注册陈列表
     originData = [],      //在线称列表 todo
@@ -40,9 +39,9 @@ tools.clone = function(o){
   return JSON.parse(JSON.stringify(o));
 }
 
-module.exports = function(server) {
+module.exports = function(app) {
 
-  var mScale = server.models.Scale;
+  var mScale = app.models.Scale;
 
   var getList = function(err,data){   //data:服务器上已注册的称，和originData在线列表求出已注册的在线状态和未注册
     if(err){
@@ -93,7 +92,8 @@ module.exports = function(server) {
 
   //获取数据，并判断是否更新
   var checkChange = function(newData){
-    newData = Devices.scale(); //todo
+    newData = newData.toString();
+    newData = JSON.parse(newData);
     var change = tools.isChange(newData,originData);
     if(change == 1){
       originData = newData;
@@ -106,13 +106,13 @@ module.exports = function(server) {
     if(change == 2){
       originData = newData;
       //todo 重量变换通知
-      console.log('change weight')
+      console.log('change weight');
     }
   }
 
   getRegisterData();
 
-  var loop = setInterval(checkChange, TIMEOUT, [null,registeredList]);
+  // var loop = setInterval(checkChange, TIMEOUT, [null,registeredList]);
   
   //秤配置改变监听维护列表
   mScale.observe('after save', function updateOnlineList(ctx, next) {
@@ -127,6 +127,7 @@ module.exports = function(server) {
   return {
     registerScale : registerScale,
     getRegisteredList : getRegisteredList,
-    getUnregisteredList : getUnregisteredList
+    getUnregisteredList : getUnregisteredList,
+    checkChange : checkChange
   }
 }
