@@ -93,7 +93,7 @@ module.exports = function(app) {
   //获取数据，并判断是否更新
   var checkChange = function(newData){
     newData = newData.toString();
-    newData = JSON.parse(newData);
+    try{newData = JSON.parse(newData.substr(0,newData.length-1));}catch(e){console.log(e);}
     var change = tools.isChange(newData,originData);
     if(change == 1){
       originData = newData;
@@ -125,8 +125,8 @@ module.exports = function(app) {
   });
 
   return {
-    registerScale : registerScale,
-    getRegisteredList : getRegisteredList,
+    registerScale : registerScale,          
+    getRegisteredList : getRegisteredList,     
     getUnregisteredList : getUnregisteredList,
     checkChange : checkChange
   }

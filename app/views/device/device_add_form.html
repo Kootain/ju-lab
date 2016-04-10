@@ -1,0 +1,124 @@
+<style type="text/css">
+    .chosen-container .chosen-choices li.search-choice {
+    background: #f1f1f1;
+    border: 1px solid #ededed;
+    border-radius: 2px;
+    box-shadow: none;
+    color: #333333;
+    cursor: default;
+    line-height: 13px;
+    margin: 3px 0 3px 5px;
+    padding: 3px 20px 3px 5px;
+    position: relative;
+}
+.chosen-container .chosen-choices {
+    -moz-box-sizing: border-box;
+    background-color: #FFFFFF;
+    border: 1px solid #CBD5DD;
+    border-radius: 2px;
+    cursor: text;
+    height: auto !important;
+    margin: 0;
+    min-height: 30px;
+    overflow: hidden;
+    padding: 2px;
+    position: relative;
+    width: 100%;
+}
+.chosen-container .chosen-choices li.search-field input[type="text"] {
+    margin: 1px 0;
+    padding: 5px;
+    height: 25px;
+    outline: 0;
+    border: 0 !important;
+    background: transparent !important;
+    box-shadow: none;
+    color: #666;
+    font-size: 100%;
+    font-family: sans-serif;
+    line-height: normal;
+    border-radius: 0;
+}
+</style>
+
+<div class="ibox-content">
+
+    <h4> 完成填写剩余信息:</h4>
+ <form role="form" name="detailForm" novalidate ng-submit="submit()">
+    <div class="form-group">
+        <label>MAC</label>
+        <input type="text" placeholder="MAC" class="form-control" name="MAC" value="{{formDetails.MAC}}" ng-minlength="3" ng-maxlength="20" readonly="true">
+    </div>
+
+    <div class="form-group">
+        <label>Type</label>
+        <input type="text" class="form-control" value="{{formDetails.type}}" readonly="true" />
+    </div>
+
+    <div class="form-group">
+        <label>Name</label>
+        <input type="text" placeholder="name" class="form-control" name="name" ng-model="formDetails.name" ng-minlength="3" ng-maxlength="20" required>
+        <div class="m-t-xs" ng-show="detailForm.name.$invalid && detailForm.name.$dirty">
+            <small class="text-danger" ng-show="detailForm.name.$error.required">Please input a name for device</small>
+            <small class="text-danger" ng-show="detailForm.name.$error.minlength">Your device name is required to be at least 3 characters</small>
+            <small class="text-danger" ng-show="detailForm.name.$error.maxlength">Your device name cannot be longer than 20 characters</small>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label>Reagent</label>
+        <div class="input-group">
+            <select id="myChosen" multiple chosen class="chosen-select" style="width:350px;min-height:30px" tabindex="4"
+              data-placeholder="Choose reagent"
+              no-results-text="'Could not find any reagent'"
+              ng-model="formDetails.reagent"
+              ng-options="r.id as r.name for r in reagents">
+            </select>
+        </div>
+
+    </div>
+    <div class="form-group">
+        <label>Position</label>
+        <div class="row" ng-repeat="(j,reagents) in scales">
+            <div class="col-md-3 col-sm-3" ng-repeat="(i,reagent) in reagents">
+                <div style="border-style: dashed;">
+                    <div>
+                        <label><input name="pos" type="radio" value="{{reagent.pos}}" ng-model="formDetails.pos" />{{reagent.name}}</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<!--     <div class="form-group">
+        <input type="text" ng-keyup="search(formDetails.reagent)" ng-model="formDetails.reagent" />
+        <select ng-options="r.name as r.name for r in reagents" ng-model="formDetails.reagent"></select>
+    </div> -->
+
+
+        <!-- <div class="form-group">
+            <label>Email</label>
+            <input type="email" placeholder="Enter email" class="form-control" name="email2" ng-model="email">
+            <div class="m-t-xs" ng-show="detailForm.email2.$invalid && detailForm.email2.$dirty">
+                <small class="text-danger" ng-show="detailForm.email2.$error">Please input a valid email address</small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label>Website</label>
+            <input type="url" placeholder="Enter your website address" class="form-control" name="website2" ng-model="website2">
+            <div class="m-t-xs" ng-show="detailForm.website2.$invalid && detailForm.website2.$dirty">
+                <small class="text-danger" ng-show="detailForm.website2.$error">Please input a valid url address (http://website.com)</small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label>Password</label>
+            <input type="password" placeholder="***" class="form-control" name="password" ng-model="password2" required>
+            <div class="m-t-xs" ng-show="detailForm.password2.$invalid && detailForm.password2.$dirty">
+                <small class="text-danger" ng-show="detailForm.password2.$error.required">Please input a password</small>
+            </div>
+        </div> -->
+        <div class="form-group">
+            <button class="btn btn-sm btn-primary" type="submit" ng-disabled="detailForm.$invalid"><strong>Submit</strong></button>
+        </div>
+    </form>
+
+</div>

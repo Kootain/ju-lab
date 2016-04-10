@@ -1,0 +1,56 @@
+<nav class="navbar-default navbar-static-side" role="navigation">
+    <div class="sidebar-collapse">
+        <ul side-navigation class="nav metismenu" id="side-menu">
+            <li class="nav-header">
+
+                <div class="dropdown profile-element" dropdown>
+                    <img alt="image" class="img-circle" src="img/profile_small.jpg"/>
+                    <a class="dropdown-toggle" dropdown-toggle href>
+                            <span class="clear">
+                                <span class="block m-t-xs">
+                                    <strong class="font-bold">{{main.userName}}</strong>
+                             </span>
+                                <span class="text-muted text-xs block">welcome<b class="caret"></b></span>
+                            </span>
+                    </a>
+                    <ul class="dropdown-menu animated fadeInRight m-t-xs">
+                        <li><a ui-sref="profile">Profile</a></li>
+                        <li><a ui-sref="contacts">Contacts</a></li>
+                        <li><a ui-sref="inbox">Mailbox</a></li>
+                        <li class="divider"></li>
+                        <li><a href="../login.html">Logout</a></li>
+                    </ul>
+                </div>
+                <div class="logo-element">
+                    Ju+
+                </div>
+            </li>
+
+            <li ui-sref-active="active">
+                <a ui-sref="content.index"><i class="fa fa-sitemap"></i> <span class="nav-label">{{ 'DASHBOARD' | translate }}</span></a>
+            </li>
+
+<!-- device -->
+            <li ng-class="{active: $state.includes('content.devices')}">
+                <a><i class="fa fa-sitemap"></i> <span class="nav-label">{{ 'ALLDEVICES' | translate }}</span><span class="fa arrow"></span></a>
+                <ul class="nav nav-second-level" ng-class="{in: $state.includes('content.devices')}">
+                    <li ui-sref-active="active"><a ui-sref="content.devices.overview">{{ 'OVERVIEW' | translate }}</a></li>
+                    <li ui-sref-active="active"><a ui-sref="content.devices.list">{{ 'ONLINEDEVICE' | translate }}</a></li>
+                </ul>
+            </li>
+<!-- device end -->
+
+
+<!-- reagent -->
+            <li ng-class="{active: $state.includes('content.reagent')}">
+                <a ui-sref="content.reagent"><i class="fa fa-flask"></i> <span class="nav-label">{{ 'REAGENT_MANAGEMENT' | translate }}</span><span class="fa arrow"></span></a>
+                <ul class="nav nav-second-level" ng-class="{in: $state.includes('content.reagent')}">
+                    <li ui-sref-active="active"><a ui-sref="content.reagents.overview">{{ 'OVERVIEW' | translate }}</a></li>
+                    <li ui-sref-active="active"><a ui-sref="content.reagents.list">{{ 'ADD_REAGENT' | translate }}</a></li>
+                </ul>
+            </li>
+<!-- reagent end -->
+        </ul>
+
+    </div>
+</nav>

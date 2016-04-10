@@ -1,0 +1,65 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-10">
+        <h2>{{ 'DEVICE' | translate }} {{ 'OVERVIEW' | translate }}</h2>
+        <div ncy-breadcrumb></div>
+    </div>
+    <div class="col-lg-2">
+
+    </div>
+</div>
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="checkbox checkbox-primary">
+        <input id="online" type="checkbox"  ng-model="mustOnline">
+        <label for="online">
+            only show connected devices
+        </label>
+    </div>
+     <div class="row">
+        <div class="col-md-3" ng-repeat="d in devices|filter:device.deviceListFilter">
+            <div class="ibox" ng-class="{'false':'offline', 'true':''}[d.isOnline]">
+                <div class="ibox-content product-box">
+
+                    <div class="product-imitation">
+                        [ {{d.name}} ]
+                    </div>
+                    <div class="product-desc">
+                                <span class="product-price">
+                                    {{ 'LEARN_MORE' | translate }}
+                                </span>
+                        <small class="text-muted">{{ d.type }}</small>
+                        <a href="#" class="product-name"> NAME: {{ d.name }}</a> 
+
+
+
+                        <div class="small m-t-xs">
+                            Many desktop publishing packages and web page editors now.
+                        </div>
+                        <div class="m-t text-righ">
+
+                            <div ng-click="deviceDetail(d)" class="btn btn-xs btn-outline btn-primary">{{'DETAIL' | translate }}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div ng-click="detectDevice()" class="ibox" style="cursor:pointer">
+                <div class="ibox-content product-box">
+
+                    <div class="product-imitation">
+                        <i class="fa fa-plus-square-o fa-5x"></i>
+                    </div>
+                    <div class="product-desc">
+                        <div class="small m-t-xs">
+                            click to add a new device.
+                        </div>
+                        <div class="m-t text-righ">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

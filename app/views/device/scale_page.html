@@ -1,0 +1,62 @@
+<style type="text/css">
+.reagent-format{
+    margin-left: 15px;
+    margin-right: 15px;
+    width:auto;
+    -webkit-transform: rotate(180deg);
+            transform: rotate(180deg);
+
+}
+
+.reagent-format > .progress-bar{
+    width: 100%;
+}
+
+.low-warning{
+    background-color: #ED5565;
+}
+</style>
+
+    <div class="col-sm-12 col-md-12">
+        <div class="inmodal">
+             <div class="ibox-title">
+                 <h5>Reagents Scale summary</h5>
+                     <div class="ibox-tools">
+                         <a ng-click="close()"><i class="fa fa-times"></i></a>
+                     </div>
+             </div>
+        <div class="ibox-content">
+             <div class="row" >
+                 <div class="col-md-3" style="text-align:center">
+                     <h2>{{  percent=floor(reagentScale.value / reagentScale.full_weight * 100) || 0}}%</h2>
+                     <div class="progress progress-mini-vertical reagent-format">
+                         <div style="height: {{percent}}%;" class="progress-bar" ng-class="percent<=20?'low-warning':''"></div>
+                     </div> 
+                     <select ng-model="itemChanged" ng-options="item.id as item.name for item in itemList">
+                        <option value="">{{reagentScale.reagent_name}}</option>
+                     </select>
+                     <div style="margin-top:10px">
+                        <a class="btn btn-rounded btn-primary" ng-click="saveItem(reagentScale.item_id)">save</a>
+                    </div>
+                 </div>
+                <div class="col-md-9">
+                    <div class="ibox float-e-margins">
+                        <div class="ibox-title">
+                            <h5>Reagents Usage Data Explore</h5>
+                            <div ibox-tools></div> 
+                        </div>
+                        <div class="ibox-content">
+                            <div class="flot-chart" style="margin-bottom:20px">
+                                <div flot class="flot-chart-content" dataset="reagentUsage" options="option"></div>
+                            </div>
+                            <div ion-range-slider range-options="sliderOptions"></div>
+                        </div>
+                    </div>
+                </div>
+             </div>
+             <div class="row" style="text-align:center">
+                <a class="btn btn-rounded" href="" ng-click="buy(reagentScale)" ng-class="reagentScale.state?'btn-danger':'btn-primary'">马上订购！</a>
+             </div>
+         </div>
+    </div>
+  </div>

@@ -1,0 +1,40 @@
+<div class="inmodal">
+    <div class="modal-header" style="border-bottom:1px solid #1ab394;padding-bottom:0">
+        <div class="ibox-tools" style="margin-top: -20px;">
+            <a ng-click="cancel()"><i class="fa fa-times"></i></a>
+        </div>
+        <h4 class="modal-title">Online List</h4>
+        <p>select one online device to continue.</p>
+    </div>
+    <div class="modal-body" id="list" style="padding: 0" slim-scroll="250px">
+        <div class="empty-bg" ng-hide="devicesUnknown">
+            <i class="fa fa-signal fa-5x"></i>
+            <div style="font-size: 20px;">empty</div>
+        </div>
+        <ul class="dropdown-menu device-list" ng-hide="!devicesUnknown">
+            <div ng-repeat="device in devicesUnknown">
+                 <li>
+                    <a ng-click="registerDevice(device)">
+                        <div>
+                            {{ device.name }}
+                            <span class="pull-right small text-success">{{ device.type }}&nbsp;<i class="fa fa-fw" ng-class="iconType[device.type]"></i></span>
+                        </div>
+                    </a>
+                </li>
+                <li class="divider"></li>
+            </div>
+        </ul>
+    </div>
+    <div class="modal-footer">
+        <div class="text-center link-block" style="padding: 0">
+            <h5>
+                <a ng-click="isLoading?'':scan()">
+                    <i class="fa fa-refresh" ng-class="{'true':'fa-spin', 'false':''}[isLoading]"></i>
+                    <strong>Refresh</strong>
+                </a>
+            </h5>
+            <p>Can' t find your device? try refresh.</p>
+        </div>
+    </div>
+</div>
+

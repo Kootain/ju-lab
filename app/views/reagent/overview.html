@@ -1,0 +1,184 @@
+<style type="text/css">
+    .chosen-container-multi .chosen-choices li.search-choice {
+    background: #f1f1f1;
+    border: 1px solid #ededed;
+    border-radius: 2px;
+    box-shadow: none;
+    color: #333333;
+    cursor: default;
+    line-height: 13px;
+    margin: 3px 0 3px 5px;
+    padding: 3px 20px 3px 5px;
+    position: relative;
+}
+.chosen-container-multi .chosen-choices {
+    -moz-box-sizing: border-box;
+    background-color: #FFFFFF;
+    border: 1px solid #CBD5DD;
+    border-radius: 2px;
+    cursor: text;
+    height: auto !important;
+    margin: 0;
+    min-height: 30px;
+    overflow: hidden;
+    padding: 2px;
+    position: relative;
+    width: 100%;
+}
+.chosen-container-multi .chosen-choices li.search-field input[type="text"] {
+    margin: 1px 0;
+    padding: 5px;
+    height: 25px;
+    outline: 0;
+    border: 0 !important;
+    background: transparent !important;
+    box-shadow: none;
+    color: #666;
+    font-size: 100%;
+    font-family: sans-serif;
+    line-height: normal;
+    border-radius: 0;
+}
+.reagent-format{
+    margin-left: 15px;
+    margin-right: 15px;
+    width:auto;
+    -webkit-transform: rotate(180deg);
+            transform: rotate(180deg);
+
+}
+
+.reagent-format > .progress-bar{
+    width: 100%;
+}
+.unhighlight{
+    background-color: #8E8E8E !important;
+}
+
+.new{
+    background-color : #ED5565 !important;
+    animation:shake 2s infinite;
+}
+.low{
+    border-color: #ED5565 !important;
+    animation:flash 3s infinite;
+}
+.low .progress-bar{
+    background-color : #ED5565 !important;
+}
+.sending{
+    border-color : #1ab394 !important;
+}
+.sending .progress-bar{
+    background-color : #ED5565 !important;
+}
+
+</style>
+<div class="row  border-bottom white-bg dashboard-header">
+
+    <div class="col-sm-12 col-md-4">
+        <h2>{{ 'WELCOME' | translate }}</h2>
+        <small>Reagent Statics</small>
+        <ul class="list-group clear-list m-t" >
+            <li ng-repeat="reagent in reagentsStat" ng-class="($index==0)?'fist-item':''"class="list-group-item" ng-click="selectScale(reagent.list)">
+                                <span class="pull-right">
+                                    <strong>{{ reagent.amount+' ' }}bucket{{reagent.amount>1?'s':''}}</strong>
+                                </span>
+                <span class="label" ng-class="color[$index]">{{ $index+1 }}</span> <strong>{{ reagent.name }}</strong>
+            </li>
+        </ul>
+    </div>
+
+    <!--架子-->
+    <div class="col-md-8 col-sm-12" style="padding-top: 30px;margin-bottom:30px">
+        <div class="row" ng-repeat="(j,reagents) in reagentsShelf">
+            <div class="col-md-3 col-sm-3" ng-repeat="(i,reagent) in reagents">
+                <div class="ibox" style="{{reagent.hasOwnProperty('reagent_name')?'':'display:none;'}}">
+                    <div class="ibox-content{{stateStyle(reagent.state)}}"  ng-init="percent=(reagent.value / reagent.full_weight * 100) || 0" ng-click="scaleDetail(reagent)" ng-class="reagent.isselected?'':'unhighlight'">
+                        <h5>{{reagent.reagent_name}}</h5>
+                        <h2>{{floor(percent)}}%</h2>
+                        <div class="progress progress-mini" >
+                            <div style="width: {{floor(percent)}}%;" class="progress-bar" ></div>
+                        </div>
+                        <div class="m-t-sm small">{{reagent.name}}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+
+
+
+    </script>
+     <!--架子结束-->
+
+    <!--
+
+    <div class="col-sm-12 col-md-4">
+        <h2>{{ 'WELCOME' | translate }}</h2>
+        <small>latest searched reagent info</small>
+        <ul class="list-group clear-list m-t">
+            <li ng-repeat="reagent in latestSearchedReagent" ng-class="($index==0)?'fist-item':''"class="list-group-item" >
+                                <span class="pull-right">
+                                    <strong>{{ reagent.gmt_visited.format('MM-dd hh:mm') }}</strong>
+                                </span>
+                <span class="label" ng-class="color[$index]">{{ $index+1 }}</span> {{ reagent.name }}
+            </li>
+        </ul>
+    </div>
+    <div class="col-sm-12 col-md-8">
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <h5>Reagents Scale summary</h5>
+                <div ibox-tools></div> 
+            </div>
+            <div class="ibox-content">
+            <div class="row">
+                <div class="col-md-2" style="text-align:center"  ng-repeat="reagentScale in reagentScales " 
+                 ng-init="percent=reagentScale.weight / reagentScale.full_weight * 100" ng-click="scaleDetail(reagentScale.name)">
+                    <h2>{{  floor(percent)  }}%</h2>
+                    <div class="progress progress-mini-vertical reagent-format">
+                        <div style="height: {{percent}}%;" class="progress-bar" ng-class="percent<=20?'low-warning':''"></div>
+                    </div> 
+                    <h4>{{reagentScale.reagent_name}}</h4>
+                </div>
+            </div>
+                
+            </div>
+        </div>
+    </div>
+    
+
+    <div class="col-sm-12 col-md-12">
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <h5>Reagents Usage Data Explore</h5>
+                <div ibox-tools></div> 
+            </div>
+            <div class="ibox-content">
+                <div class="flot-chart" style="margin-bottom:20px">
+                    <div flot class="flot-chart-content" dataset="reagentUsage" options="option"></div>
+                </div>
+                <div ion-range-slider range-options="reagentOverview.sliderOptions"></div>
+                <div class="form-inline" style="margin-top:40px">
+                    <label class="font-noraml">reagent filter</label>
+                    <div class="input-group">
+                        <select  multiple chosen class="chosen-select" style="width:350px;min-height:30px" tabindex="4"
+                              data-placeholder="Choose some scales"
+                              no-results-text="'Could not find any scales'"
+                              ng-model="selectedScales"
+                              ng-options="r as r.name for r in scales" style="width:200px">
+                        </select>
+                    </div>
+                </div>                
+            </div>
+        </div>
+    </div>
+    -->
+
+</div>
+
+
+

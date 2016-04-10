@@ -1,0 +1,132 @@
+<style type="text/css">
+.no-margin{
+    margin: 0;
+}
+
+.myValidate input.ng-invalid.ng-dirty.active {
+    background-color: #ed5565;
+}
+
+.myValidate input.ng-valid.ng-dirty.active {
+    background-color: #78FA8E;
+}
+.inactive {
+    background-color: inherit;
+    height: 27px;
+    padding-left: 0px;
+    width:95%;
+}
+.active{
+    background-color: #fff;
+}
+</style>
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-10">
+        <h2>{{ 'REAGENT' | translate }} {{ 'OVERVIEW' | translate }}</h2>
+        <h5>describe  Lorem ipsum dolor sit amet.</h5>
+    </div>
+    <div class="col-lg-2">
+    </div>
+</div>
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div ng-if="!reagents || $.isEmptyObject(reagents)" class="row">
+        <div class="col-lg-12">
+            <div class="wrapper wrapper-content">
+                <div class="middle-box text-center animated fadeInRightBig">
+                    <h3 class="font-bold">the list is still empty!</h3>
+                    <div class="error-desc">
+                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Magnam ab vitae ipsam, deleniti sequi explicabo laboriosam sit labore ad eos, voluptatum doloribus, odit exercitationem sapiente id quibusdam molestiae ipsa. Assumenda.
+                        <br/><a ui-sref="content.reagent-add" class="btn btn-primary m-t">add one</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div  ng-if="reagents && !$.isEmptyObject(reagents)" class="row">
+        <div class="col-lg-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>{{ 'REAGENT' | translate }} {{ 'OVERVIEW' | translate }}</h5>
+                    <div class="ibox-tools dropdown" dropdown="">
+                        <input class="search" ng-model="searchFilter"/>
+                        <a ng-click="add()"><i class="fa fa-plus text-navy"></i></a>
+                        <a class="dropdown-toggle" href="" dropdown-toggle="" aria-haspopup="true" aria-expanded="false">
+                            <i class="fa fa-wrench"></i>
+                        </a>
+                        <ul class="dropdown-menu dropdown-user">
+                            <li>
+                                <a href="" ng-click="makedata()">clear all</a>
+                            </li>
+                            <li><a href="">Config option 2</a>
+                        </li>
+                    </ul>
+                    <a ng-click="refresh()"><i class="fa fa-refresh"></i></a>
+                </div>
+            </div>
+            <form class="myValidate" novalidate>
+            <div class="ibox-content" id="reagent-box">
+                <table ng-table="talbeParams" class="table" id="reagents-table" show-filter="true">
+                    <thead>
+                        <tr>
+                            <th style="width:10%">  
+                                <div class="checkbox">
+                                    <input ng-model="selectAll" type="checkbox" ng-click="toggleAll(selectAll)"><label></label>
+                                </div>
+                            </th>
+                            <th style="width:35%">CAS ID</th>
+                            <th style="width:35%">RFID info.</th>
+                            <th style="width:20%">Operation</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="reagent in reagentsAdd">
+                            <td>
+                                <div class="checkbox">
+                                    <input id="{{ reagent.id }}" type="checkbox" ng-model="reagent.selected"><label></label>
+                                </div>
+                            </td>
+                            <td id="cas-{{reagent.id}}" >
+                                <input type="text" ng-model="reagent.name" class="active" required />
+                            </td>
+                            <td id="rfid-{{reagent.id}}"> 
+                                <input type="text" ng-model="reagent.rfid" class="active" required  />
+                            </td>
+                            <td id="ops">
+                                <a ng-click="addReagent($index)" class="btn btn-xs btn-outline btn-primary">&nbsp;Add&nbsp;</a>
+                                <a ng-click="close($index)" class="btn btn-xs btn-outline btn-danger">Cancel</a>
+                            </td>
+                        </tr>
+                        <tr ng-repeat="reagent in reagents | filter: {name :searchFilter}" >
+                            <td>
+                                <div class="checkbox">
+                                    <input id="{{ $index }}" type="checkbox" ng-model="reagent.selected"><label></label>
+                                </div>
+                            </td>
+                            <td id="cas-{{reagent.id}}">
+                                <input ng-if="!reagent.readonly" type="text" ng-model="reagent.name" class="active" required />
+                                {{reagent.readonly?reagent.name:""}}
+                                <span class="badge badge-success" ng-if="reagent.flag">new</span>
+                            </td>
+                            <td id="rfid-{{reagent.id}}"> 
+                                <input ng-if="!reagent.readonly" type="text" ng-model="reagent.rfid" class="active" required/>
+                                {{reagent.readonly?reagent.rfid:""}}
+                            </td>
+                            <td id="ops" ng-if="reagent.readonly">
+                                <a ng-click="reagent.readonly=false;reagent.flag=false" class="no-margin btn btn-xs btn-outline btn-primary">&nbsp;Edit&nbsp;</a>
+                                <a ng-click="deleteReagent($index)" class="o-margin btn btn-xs btn-outline btn-danger">Delete</a>
+                            </td>
+                            <td id="ops" ng-if="!reagent.readonly">
+                                <a ng-click="saveReagent($index)" class="btn btn-xs btn-outline btn-primary">Save</a>
+                                <a ng-click="cancel($index)" class="btn btn-xs btn-outline btn-danger">Cancel</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <a ng-click="find()" class="no-margin btn btn-success">Find selected items</a>
+                <a ng-click="deleteReagents()" class="no-margin btn btn-outline btn-danger">Delete selected items</a>
+            </div>
+            </form>
+        </div>
+    </div>
+</div>
+</div>
