@@ -2,7 +2,6 @@
 * 轮询 oringinData，若有更变 更新 onLineList,offlineList
 *
 */
-var Scale = require('../../model/Scale');
 var Devices = require('./Devices')();
 var registeredList = [],      //在线已注册称列表
     unregisteredList = [],  //未注册陈列表
@@ -79,7 +78,7 @@ module.exports = function(server) {
   }
 
   var getUnregisteredList = function(){
-    return unregisteredList
+    return unregisteredList;
   }
 
   var registerScale = function(data,cb){
