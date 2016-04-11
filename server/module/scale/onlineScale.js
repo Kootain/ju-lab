@@ -93,7 +93,12 @@ module.exports = function(app) {
   //获取数据，并判断是否更新
   var checkChange = function(newData){
     newData = newData.toString();
-    try{newData = JSON.parse(newData.substr(0,newData.length-1));}catch(e){console.log(e);}
+    try{
+      newData = JSON.parse(newData.substr(0,newData.length-1));
+    }catch(e){
+      newData = JSON.parse(newData);
+      // console.log(e);
+    }
     var change = tools.isChange(newData,originData);
     if(change == 1){
       originData = newData;

@@ -1,5 +1,5 @@
 var exec = require('child_process').exec;
-var SERVER_PORT = 8123;
+var SERVER_PORT = 8122;
 module.exports = function (app) {
   var Device = require('../module/device');
   var Scale = require('../module/scale/onlineScale')(app);
