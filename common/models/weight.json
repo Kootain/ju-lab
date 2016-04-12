@@ -15,10 +15,6 @@
       "type": "number",
       "required": true
     },
-    "item_id": {
-      "type": "number",
-      "required": true
-    },
     "time": {
       "type": "date",
       "required": true

@@ -25,10 +25,19 @@
       "type": "string",
       "required": false,
       "comments": "称SID"
+    },
+    "scalelog_id": {
+      "type": "number"
     }
   },
   "validations": [],
-  "relations": {},
+  "relations": {
+    "scalelog": {
+      "type": "hasOne",
+      "model": "ScaleLog",
+      "foreignKey": "scalelog_id"
+    }
+  },
   "acls": [],
   "methods": {}
 }

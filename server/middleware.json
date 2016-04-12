@@ -45,20 +45,20 @@
   "files": {
     "loopback#static": [
       {
-        "params": "$!../app", 
-        "paths": "/"
+        "paths": "/",
+        "params": "$!../app"
       },
       {
-        "params": "$!../bower_components",
-        "paths": "/bower_components"
+        "paths": "/bower_components",
+        "params": "$!../bower_components"
       },
       {
-        "params": "$!../node_modules",
-        "paths": "/node_modules"
+        "paths": "/node_modules",
+        "params": "$!../node_modules"
       },
       {
-        "params": "$!../node_modules/socket.io/node_modules",
-        "paths": "/node_modules"
+        "paths": "/node_modules",
+        "params": "$!../node_modules/socket.io/node_modules"
       }
     ]
   },

@@ -1,5 +1,5 @@
 {
-  "name": "Log",
+  "name": "ScaleLog",
   "base": "PersistedModel",
   "strict": false,
   "idInjection": false,
@@ -13,7 +13,7 @@
     },
     "item_id": {
       "type": "number",
-      "id": true,
+      "id": false,
       "comments": "称上物品id"
     }
   },
