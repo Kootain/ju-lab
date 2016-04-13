@@ -33,8 +33,8 @@
   "validations": [],
   "relations": {
     "scalelog": {
-      "type": "hasOne",
-      "model": "ScaleLog",
+      "type": "belongsTo",
+      "model": "Scalelog",
       "foreignKey": "scalelog_id"
     }
   },

@@ -1,5 +1,5 @@
 {
-  "name": "ScaleLog",
+  "name": "Scalelog",
   "base": "PersistedModel",
   "strict": false,
   "idInjection": false,
@@ -18,7 +18,12 @@
     }
   },
   "validations": [],
-  "relations": {},
+  "relations": {
+    "scales": {
+      "type": "belongsTo",
+      "model": "Scale"
+    }
+    },
   "acls": [],
   "methods": {}
 }

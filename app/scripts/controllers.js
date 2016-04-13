@@ -138,7 +138,7 @@ function deviceCtrl($scope, $http, $modal, Scale) {
   };
 };
 
-function scalePageCtrl($scope, $modal, $modalInstance, Scale, Weight, Item){
+function scalePageCtrl($scope, $modal, $http, $modalInstance, Scale, Weight, Reagent, Scalelog){
 
   $scope.from=new Date();
   $scope.from.setMonth($scope.from.getMonth()-1);
@@ -198,7 +198,7 @@ function scalePageCtrl($scope, $modal, $modalInstance, Scale, Weight, Item){
   $scope.close = $modalInstance.close;
 
   $scope.reagentUsage=[];
-  console.log($scope.reagentScale);
+
   Weight.find({filter:{
       where:{
         item_id : $scope.reagentScale.id,
@@ -218,10 +218,29 @@ function scalePageCtrl($scope, $modal, $modalInstance, Scale, Weight, Item){
   })
 
   $scope.itemList=[];
-  Item.find({},function(val){
+  Reagent.find({},function(val){
     $scope.itemList = val;
   });
+  $http.get('env/devices').then((res)=>{
+    $scope.unKnowList=res.data.unKnown;
+  },(res)=>{
+
+  });
+
   $scope.itemChanged = 0;
+  $scope.scaleChanged = 0;
+
+  $a= Scale;
+
+  $scope.saveScale = function(){
+    console.log('save');
+    Scale.create({
+      sid: $scope.scaleChanged.sid,
+      pos : $scope.reagentScale.pos
+    },function(data){
+      console.log(data);
+    });
+  }
 
   $scope.saveItem = function(item_id){
     var data={
@@ -849,14 +868,14 @@ function reagentCtrl($scope, $modal, $compile, $timeout, $http, RfidInfo, ngTabl
  */
 
 
-function scaleOverviewCtrl($scope, $http){
+function scaleOverviewCtrl($scope, $http, $modal){
   $scope.scalesList = [];     // init scalesList
   $scope.scalesShelf = [];
   for(var i = 0; i< webConfig.shelfY; i++){     //scalesList will be a two-demision array
     $scope.scalesShelf[i] = [];
     for(var j = 0; j < webConfig.shelfX; j++){
       $scope.scalesShelf[i].push({
-
+        pos:parseInt(i+1)+','+parseInt(j+1)
       });
     }
   }
@@ -872,6 +891,16 @@ function scaleOverviewCtrl($scope, $http){
     console.log('error from env/devices!!',res);
   });
 
+  $scope.scaleDetail = function(scale){
+    $scope.reagentScale = scale
+    var modalInstance = $modal.open({
+      templateUrl: 'views/reagent/scale_page.html',
+      size: 'md',
+      scope: $scope,
+      controller: 'scalePageCtrl'
+    });
+  };
+
   //称上物品状态
   $scope.stateStyle = function(state){
     var style = "";
@@ -881,7 +910,6 @@ function scaleOverviewCtrl($scope, $http){
     if(state==3) style=" sending";   //补货中
     return style;
   };
-  $a = $scope;
 }
 
 function reagentOverviewCtrl($scope, $http, $modal, RfidInfo, Weight, Scale, Item, Reagent, Email){
@@ -1050,8 +1078,6 @@ function reagentOverviewCtrl($scope, $http, $modal, RfidInfo, Weight, Scale, Ite
       $scope.reagentsShelf[Math.floor(list[i]/4)][list[i]%4].isselected = true;
     }
   }
-
-  $a = Scale;
 
   $scope.buy= function (scale){
     var html = `<table  border="1">

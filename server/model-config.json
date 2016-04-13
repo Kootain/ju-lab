@@ -62,8 +62,10 @@
     "$promise": {},
     "$resolved": true
   },
-  "ScaleLog": {
+  "Scalelog": {
     "dataSource": "infoDB",
-    "public": true
+    "public": true,
+    "$promise": {},
+    "$resolved": true
   }
 }

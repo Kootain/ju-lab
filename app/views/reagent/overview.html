@@ -94,13 +94,13 @@
         <div class="row" ng-repeat="(j,scales) in scalesShelf">
             <div class="col-md-3 col-sm-3" ng-repeat="(i,scale) in scales">
                 <div class="ibox"">
-                    <div class="ibox-content{{stateStyle(scale.state)}}"  ng-init="percent=(scale.weight / scale.full_weight * 100) || 0" ng-click="scaleDetail(scale)" ng-class="scale.isselected===false?'unhighlight':''">
+                    <div class="ibox-content{{stateStyle(scale.state)}}"  ng-init="percent=(scale.weight / scale.full * 100) || 0" ng-click="scaleDetail(scale)" ng-class="scale.isselected===false?'unhighlight':''">
                         <h5>{{scale.weight}}</h5>
                         <h2>{{floor(percent)}}%</h2>
                         <div class="progress progress-mini" >
                             <div style="width: {{floor(percent)}}%;" class="progress-bar" ></div>
                         </div>
-                        <div class="m-t-sm small">{{scale.name}}</div>
+                        <div class="m-t-sm small">{{scale.sid}}</div>
                     </div>
                 </div>
             </div>

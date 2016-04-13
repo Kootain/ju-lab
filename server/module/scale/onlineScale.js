@@ -72,6 +72,30 @@ module.exports = function(app) {
     mScale.find(getList);
   }
 
+  //获取数据，并判断是否更新
+  var checkChange = function(newData){
+    newData = newData.toString();
+    try{
+      newData = JSON.parse(newData.substr(0,newData.length-1));
+    }catch(e){
+      newData = JSON.parse(newData);
+    }
+    var change = tools.isChange(newData,originData);
+    if(change == 1){
+      originData = newData;
+      getList(null,registeredList);
+      console.log('change scaleList',registeredList,unregisteredList);
+    }
+    if(change == 0){
+      console.log('noting change on scalelist',registeredList,unregisteredList);
+    }
+    if(change == 2){
+      originData = newData;
+      //todo 重量变换通知
+      console.log('change weight');
+    }
+  }
+
   var getRegisteredList = function(){
     return registeredList;
   }
@@ -90,39 +114,14 @@ module.exports = function(app) {
     });
   }
 
-  //获取数据，并判断是否更新
-  var checkChange = function(newData){
-    newData = newData.toString();
-    try{
-      newData = JSON.parse(newData.substr(0,newData.length-1));
-    }catch(e){
-      newData = JSON.parse(newData);
-      // console.log(e);
-    }
-    var change = tools.isChange(newData,originData);
-    if(change == 1){
-      originData = newData;
-      getList(null,registeredList);
-      console.log('change scaleList',registeredList,unregisteredList);
-    }
-    if(change == 0){
-      console.log('noting change on scalelist',registeredList,unregisteredList);
-    }
-    if(change == 2){
-      originData = newData;
-      //todo 重量变换通知
-      console.log('change weight');
-    }
-  }
-
   getRegisterData();
 
   // var loop = setInterval(checkChange, TIMEOUT, [null,registeredList]);
   
   //秤配置改变监听维护列表
   mScale.observe('after save', function updateOnlineList(ctx, next) {
-     getRegisterData();
-     next();
+    getRegisterData();
+    next();
   });
   mScale.observe('after delete', function updateOnlineList(ctx, next) {
      getRegisterData();
