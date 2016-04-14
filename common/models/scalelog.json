@@ -15,15 +15,15 @@
       "type": "number",
       "id": false,
       "comments": "称上物品id"
+    },
+    "weight": {
+      "type": "number",
+      "comments": "当前重量"
     }
   },
   "validations": [],
   "relations": {
-    "scales": {
-      "type": "belongsTo",
-      "model": "Scale"
-    }
-    },
+  },
   "acls": [],
   "methods": {}
 }

@@ -99,7 +99,7 @@ module.exports = function (app) {
         }
         app.offlineDevices = offlineDevices;
         // console.log('OFFLINE:',app.offlineDevices);
-        console.log('ONLINE:',app.onlineDevices);
+        // console.log('ONLINE:',app.onlineDevices);
 
         setTimeout(function() {
           deviceList();

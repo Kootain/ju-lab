@@ -7,10 +7,6 @@
     "validateUpsert": true
   },
   "properties": {
-    "is_online": {
-      "type": "number",
-      "comments": "称是否在线"
-    },
     "name": {
       "type": "string",
       "required": false,
@@ -28,11 +24,15 @@
     },
     "scalelog_id": {
       "type": "number"
+    },
+    "status": {
+      "type": "number",
+      "comments": "称是否在线"
     }
   },
   "validations": [],
   "relations": {
-    "scalelog": {
+    "scalelogs": {
       "type": "belongsTo",
       "model": "Scalelog",
       "foreignKey": "scalelog_id"

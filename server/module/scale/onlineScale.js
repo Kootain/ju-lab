@@ -28,6 +28,7 @@ tools.isChange = function(a, b) {
             registeredList[j][value] = a[i][value];
           }
         }
+
         flag = 2;
       }
     }
@@ -41,7 +42,9 @@ tools.clone = function(o){
 
 module.exports = function(app) {
 
-  var mScale = app.models.Scale;
+  var mScale = app.models.Scale,
+      mWeight = app.models.Weight,
+      mScalelog = app.models.Scalelog;
 
   var getList = function(err,data){   //data:服务器上已注册的称，和originData在线列表求出已注册的在线状态和未注册
     if(err){
@@ -69,7 +72,7 @@ module.exports = function(app) {
   }
   
   var getRegisterData = function(){
-    mScale.find(getList);
+    mScale.find({include:'scalelogs'},getList);
   }
 
   //获取数据，并判断是否更新
@@ -94,6 +97,44 @@ module.exports = function(app) {
       //todo 重量变换通知
       console.log('change weight');
     }
+  }
+
+  var aa = (newData)=>{
+    newData = newData.toString();
+    try{
+      newData = JSON.parse(newData.substr(0,newData.length-1));
+    }catch(e){
+      newData = JSON.parse(newData);
+    }
+    for(var i in registeredList){
+      var tmp = newData.find((e)=>{
+        if(e === undefined || e === null) return 0;
+        return e.sid === registeredList[i].sid;
+      });
+      if(tmp === undefined){
+        registeredList[i].status = 0;
+        continue;
+      }
+      if (registeredList[i].scalelogs === undefined){
+        registeredList[i].status = 2;
+        continue;
+      }
+      if (tmp.weight != registeredList[i].scalelogs.weight){
+        registeredList[i].scalelogs.weight = tmp.weight;
+        registeredList[i].status = 1; //TODD  
+        console.log(registeredList[i].scalelogs);
+        mScalelog.upsert(registeredList[i].scalelogs
+        ,(data)=>{
+          console.log('log weight success!');
+        });
+      }
+      delete newData[newData.indexOf(tmp)];
+    }
+
+    for(var i = newData.length-1;i>= 0;i--){
+      if (newData[i] === undefined) newData.splice(i,1);
+    }
+    unregisteredList = newData;
   }
 
   var getRegisteredList = function(){
@@ -132,6 +173,6 @@ module.exports = function(app) {
     registerScale : registerScale,          
     getRegisteredList : getRegisteredList,     
     getUnregisteredList : getUnregisteredList,
-    checkChange : checkChange
+    checkChange : aa
   }
 }
