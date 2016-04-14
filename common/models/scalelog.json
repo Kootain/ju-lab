@@ -23,6 +23,11 @@
   },
   "validations": [],
   "relations": {
+    "items":{
+      "type":"belongsTo",
+      "model":"Reagent",
+      "foreignKey":"item_id"
+    }
   },
   "acls": [],
   "methods": {}

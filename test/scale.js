@@ -1,5 +1,6 @@
 var net = require('net');
-var LOOP_TIME = 5000;
+var process = require('process');
+var LOOP_TIME = 10000;
 var PORT = 8122;
 var obj =[{
   sid: '11',
@@ -27,6 +28,7 @@ var obj =[{
 var server = net.createServer((socket) => {
   var interval = setInterval(function() {
     socket.write(JSON.stringify(obj));
+    console.log(obj);
   }, LOOP_TIME);
   console.log('connceted!');
   socket.on('close',()=>{
@@ -39,6 +41,20 @@ var server = net.createServer((socket) => {
 }).on('error', (err)=>{
   throw err;
 });
+
+process.stdin.setEncoding('utf8');
+
+process.stdin.on('readable',()=>{
+  var chunk = process.stdin.read();
+  if(chunk != null){
+    var sid = chunk.match(/[0-9]+:/)[0].replace(':','');
+    var weight = chunk.match(/:[0-9]+/)[0].replace(':','');
+    var tmp = obj.find((e)=>{return e.sid == sid});
+    if(tmp != undefined){
+      tmp.weight = weight;
+    }
+  }
+})
 
 server.listen({host: 'localhost',port:PORT},() => {
   address = server.address();

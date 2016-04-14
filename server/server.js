@@ -21,6 +21,4 @@ app.start = function() {
 // Sub-apps like REST API are mounted via boot scripts.
 boot(app, __dirname);
 
-var scale = require('./module/scale/onlineScale')(app);
-// var devices = require('./module/scale/Devices')(app);
-app.scaleAction = scale;
+var scale = require('./module/scale/Scale')(app);

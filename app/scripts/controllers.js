@@ -242,20 +242,23 @@ function scalePageCtrl($scope, $modal, $http, $modalInstance, Scale, Weight, Rea
     });
   }
 
-  $scope.saveItem = function(item_id){
+  $scope.saveItem = function(scale){
+    console.log(scale);
     var data={
-      "item_id": $scope.itemChanged
+      "item_id": $scope.itemChanged,
+      "full": scale.weight||scale.scalelogs.weight,
+      "weight": scale.weight||scale.scalelogs.weight
       };
-      console.log(data);
-    Scale.update(
-      {
-        "where":{"id":$scope.reagentScale.id}
-      },data,function(val, resHeader){
+    Scalelog.create(data,(data,hearder)=>{
+      scale.scalelog_id = data.id;
+      Scale.update({
+        where:{id:scale.id}
+      },scale,function(val, resHeader){
          tools.notify('alert-success', 'Update success');
-        $scope.$parent.queryScale();
       },function(err){
         tools.notify('alert-danger', res.data.error.message);
       });
+    });      
   }
       //TODO if there is no data in weight error
       //TODO device list should content device's id
@@ -868,9 +871,11 @@ function reagentCtrl($scope, $modal, $compile, $timeout, $http, RfidInfo, ngTabl
  */
 
 
-function scaleOverviewCtrl($scope, $http, $modal){
+function scaleOverviewCtrl($scope, $http, $modal, $timeout){
+  $scope.floor = Math.floor;
   $scope.scalesList = [];     // init scalesList
   $scope.scalesShelf = [];
+
   for(var i = 0; i< webConfig.shelfY; i++){     //scalesList will be a two-demision array
     $scope.scalesShelf[i] = [];
     for(var j = 0; j < webConfig.shelfX; j++){
@@ -879,17 +884,21 @@ function scaleOverviewCtrl($scope, $http, $modal){
       });
     }
   }
-
-  $http.get('env/devices').then(function(res){   //sucess callback
-    $scope.scalesList = res.data.online;
-    for(var i in $scope.scalesList){
-      var y = $scope.scalesList[i].pos.match(/[0-9]+,/)[0].replace(',','');
-      var x = $scope.scalesList[i].pos.match(/,[0-9]+/)[0].replace(',','');
-      $scope.scalesShelf[y-1][x-1] = $scope.scalesList[i];
-    }
-  },function(res){   //error callback
-    console.log('error from env/devices!!',res);
-  });
+  var loop = function(){
+    $http.get('env/devices').then(function(res){   //sucess callback
+      $scope.scalesList = res.data.online;
+      for(var i in $scope.scalesList){
+        var y = $scope.scalesList[i].pos.match(/[0-9]+,/)[0].replace(',','');
+        var x = $scope.scalesList[i].pos.match(/,[0-9]+/)[0].replace(',','');
+        $scope.scalesShelf[y-1][x-1] = $scope.scalesList[i];
+      }
+    },function(res){   //error callback
+      console.log('error from env/devices!!',res);
+    });
+  }
+  setInterval(function(){
+    loop();
+  },3000);
 
   $scope.scaleDetail = function(scale){
     $scope.reagentScale = scale
@@ -904,10 +913,11 @@ function scaleOverviewCtrl($scope, $http, $modal){
   //称上物品状态
   $scope.stateStyle = function(state){
     var style = "";
-    if(state==0) style="";      //普通展示状态
-    if(state==1) style=" new";     //称上新换物品
-    if(state==2) style=" low";     //称上物品紧缺
-    if(state==3) style=" sending";   //补货中
+    if(state==1) style="";      //普通展示状态
+    if(state==2) style=" new";     //称上新换物品
+    if(state==3) style=" low";     //称上物品紧缺
+    if(state==4) style=" sending";   //补货中
+    if(state==0||state==null) style=" offline";
     return style;
   };
 }

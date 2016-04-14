@@ -2162,6 +2162,12 @@ module.factory(
           url: urlBase + "/Reagents/change-stream",
           method: "POST"
         },
+
+        // INTERNAL. Use Scalelog.items() instead.
+        "::get::Scalelog::items": {
+          url: urlBase + "/Scalelogs/:id/items",
+          method: "GET"
+        },
       }
     );
 
@@ -2925,28 +2931,10 @@ module.factory(
       { 'id': '@id' },
       {
 
-        // INTERNAL. Use Scale.log() instead.
-        "prototype$__get__log": {
-          url: urlBase + "/Scales/:id/log",
+        // INTERNAL. Use Scale.scalelogs() instead.
+        "prototype$__get__scalelogs": {
+          url: urlBase + "/Scales/:id/scalelogs",
           method: "GET"
-        },
-
-        // INTERNAL. Use Scale.log.create() instead.
-        "prototype$__create__log": {
-          url: urlBase + "/Scales/:id/log",
-          method: "POST"
-        },
-
-        // INTERNAL. Use Scale.log.update() instead.
-        "prototype$__update__log": {
-          url: urlBase + "/Scales/:id/log",
-          method: "PUT"
-        },
-
-        // INTERNAL. Use Scale.log.destroy() instead.
-        "prototype$__destroy__log": {
-          url: urlBase + "/Scales/:id/log",
-          method: "DELETE"
         },
 
         /**
@@ -3512,29 +3500,15 @@ module.factory(
     */
     R.modelName = "Scale";
 
-    /**
-     * @ngdoc object
-     * @name lbServices.Scale.log
-     * @header lbServices.Scale.log
-     * @object
-     * @description
-     *
-     * The object `Scale.log` groups methods
-     * manipulating `ScaleLog` instances related to `Scale`.
-     *
-     * Call {@link lbServices.Scale#log Scale.log()}
-     * to query all related instances.
-     */
-
 
         /**
          * @ngdoc method
-         * @name lbServices.Scale#log
+         * @name lbServices.Scale#scalelogs
          * @methodOf lbServices.Scale
          *
          * @description
          *
-         * Fetches hasOne relation log.
+         * Fetches belongsTo relation scalelogs.
          *
          * @param {Object=} parameters Request parameters.
          *
@@ -3554,157 +3528,12 @@ module.factory(
          *
          * <em>
          * (The remote method definition does not provide any description.
-         * This usually means the response is a `ScaleLog` object.)
+         * This usually means the response is a `Scalelog` object.)
          * </em>
          */
-        R.log = function() {
-          var TargetResource = $injector.get("ScaleLog");
-          var action = TargetResource["::get::Scale::log"];
-          return action.apply(R, arguments);
-        };
-
-        /**
-         * @ngdoc method
-         * @name lbServices.Scale.log#create
-         * @methodOf lbServices.Scale.log
-         *
-         * @description
-         *
-         * Creates a new instance in log of this model.
-         *
-         * @param {Object=} parameters Request parameters.
-         *
-         *  - `id` – `{*}` - PersistedModel id
-         *
-         * @param {Object} postData Request data.
-         *
-         * This method expects a subset of model properties as request parameters.
-         *
-         * @param {function(Object,Object)=} successCb
-         *   Success callback with two arguments: `value`, `responseHeaders`.
-         *
-         * @param {function(Object)=} errorCb Error callback with one argument:
-         *   `httpResponse`.
-         *
-         * @returns {Object} An empty reference that will be
-         *   populated with the actual data once the response is returned
-         *   from the server.
-         *
-         * <em>
-         * (The remote method definition does not provide any description.
-         * This usually means the response is a `ScaleLog` object.)
-         * </em>
-         */
-        R.log.create = function() {
-          var TargetResource = $injector.get("ScaleLog");
-          var action = TargetResource["::create::Scale::log"];
-          return action.apply(R, arguments);
-        };
-
-        /**
-         * @ngdoc method
-         * @name lbServices.Scale.log#createMany
-         * @methodOf lbServices.Scale.log
-         *
-         * @description
-         *
-         * Creates a new instance in log of this model.
-         *
-         * @param {Object=} parameters Request parameters.
-         *
-         *  - `id` – `{*}` - PersistedModel id
-         *
-         * @param {Object} postData Request data.
-         *
-         * This method expects a subset of model properties as request parameters.
-         *
-         * @param {function(Array.<Object>,Object)=} successCb
-         *   Success callback with two arguments: `value`, `responseHeaders`.
-         *
-         * @param {function(Object)=} errorCb Error callback with one argument:
-         *   `httpResponse`.
-         *
-         * @returns {Array.<Object>} An empty reference that will be
-         *   populated with the actual data once the response is returned
-         *   from the server.
-         *
-         * <em>
-         * (The remote method definition does not provide any description.
-         * This usually means the response is a `ScaleLog` object.)
-         * </em>
-         */
-        R.log.createMany = function() {
-          var TargetResource = $injector.get("ScaleLog");
-          var action = TargetResource["::createMany::Scale::log"];
-          return action.apply(R, arguments);
-        };
-
-        /**
-         * @ngdoc method
-         * @name lbServices.Scale.log#destroy
-         * @methodOf lbServices.Scale.log
-         *
-         * @description
-         *
-         * Deletes log of this model.
-         *
-         * @param {Object=} parameters Request parameters.
-         *
-         *  - `id` – `{*}` - PersistedModel id
-         *
-         * @param {function(Object,Object)=} successCb
-         *   Success callback with two arguments: `value`, `responseHeaders`.
-         *
-         * @param {function(Object)=} errorCb Error callback with one argument:
-         *   `httpResponse`.
-         *
-         * @returns {Object} An empty reference that will be
-         *   populated with the actual data once the response is returned
-         *   from the server.
-         *
-         * This method returns no data.
-         */
-        R.log.destroy = function() {
-          var TargetResource = $injector.get("ScaleLog");
-          var action = TargetResource["::destroy::Scale::log"];
-          return action.apply(R, arguments);
-        };
-
-        /**
-         * @ngdoc method
-         * @name lbServices.Scale.log#update
-         * @methodOf lbServices.Scale.log
-         *
-         * @description
-         *
-         * Update log of this model.
-         *
-         * @param {Object=} parameters Request parameters.
-         *
-         *  - `id` – `{*}` - PersistedModel id
-         *
-         * @param {Object} postData Request data.
-         *
-         * This method expects a subset of model properties as request parameters.
-         *
-         * @param {function(Object,Object)=} successCb
-         *   Success callback with two arguments: `value`, `responseHeaders`.
-         *
-         * @param {function(Object)=} errorCb Error callback with one argument:
-         *   `httpResponse`.
-         *
-         * @returns {Object} An empty reference that will be
-         *   populated with the actual data once the response is returned
-         *   from the server.
-         *
-         * <em>
-         * (The remote method definition does not provide any description.
-         * This usually means the response is a `ScaleLog` object.)
-         * </em>
-         */
-        R.log.update = function() {
-          var TargetResource = $injector.get("ScaleLog");
-          var action = TargetResource["::update::Scale::log"];
+        R.scalelogs = function() {
+          var TargetResource = $injector.get("Scalelog");
+          var action = TargetResource["::get::Scale::scalelogs"];
           return action.apply(R, arguments);
         };
 
@@ -4305,13 +4134,13 @@ module.factory(
 
 /**
  * @ngdoc object
- * @name lbServices.ScaleLog
- * @header lbServices.ScaleLog
+ * @name lbServices.Scalelog
+ * @header lbServices.Scalelog
  * @object
  *
  * @description
  *
- * A $resource object for interacting with the `ScaleLog` model.
+ * A $resource object for interacting with the `Scalelog` model.
  *
  * ## Example
  *
@@ -4321,17 +4150,23 @@ module.factory(
  *
  */
 module.factory(
-  "ScaleLog",
+  "Scalelog",
   ['LoopBackResource', 'LoopBackAuth', '$injector', function(Resource, LoopBackAuth, $injector) {
     var R = Resource(
-      urlBase + "/ScaleLogs/:id",
+      urlBase + "/Scalelogs/:id",
       { 'id': '@id' },
       {
 
+        // INTERNAL. Use Scalelog.items() instead.
+        "prototype$__get__items": {
+          url: urlBase + "/Scalelogs/:id/items",
+          method: "GET"
+        },
+
         /**
          * @ngdoc method
-         * @name lbServices.ScaleLog#create
-         * @methodOf lbServices.ScaleLog
+         * @name lbServices.Scalelog#create
+         * @methodOf lbServices.Scalelog
          *
          * @description
          *
@@ -4358,18 +4193,18 @@ module.factory(
          *
          * <em>
          * (The remote method definition does not provide any description.
-         * This usually means the response is a `ScaleLog` object.)
+         * This usually means the response is a `Scalelog` object.)
          * </em>
          */
         "create": {
-          url: urlBase + "/ScaleLogs",
+          url: urlBase + "/Scalelogs",
           method: "POST"
         },
 
         /**
          * @ngdoc method
-         * @name lbServices.ScaleLog#createMany
-         * @methodOf lbServices.ScaleLog
+         * @name lbServices.Scalelog#createMany
+         * @methodOf lbServices.Scalelog
          *
          * @description
          *
@@ -4396,19 +4231,19 @@ module.factory(
          *
          * <em>
          * (The remote method definition does not provide any description.
-         * This usually means the response is a `ScaleLog` object.)
+         * This usually means the response is a `Scalelog` object.)
          * </em>
          */
         "createMany": {
           isArray: true,
-          url: urlBase + "/ScaleLogs",
+          url: urlBase + "/Scalelogs",
           method: "POST"
         },
 
         /**
          * @ngdoc method
-         * @name lbServices.ScaleLog#upsert
-         * @methodOf lbServices.ScaleLog
+         * @name lbServices.Scalelog#upsert
+         * @methodOf lbServices.Scalelog
          *
          * @description
          *
@@ -4435,18 +4270,18 @@ module.factory(
          *
          * <em>
          * (The remote method definition does not provide any description.
-         * This usually means the response is a `ScaleLog` object.)
+         * This usually means the response is a `Scalelog` object.)
          * </em>
          */
         "upsert": {
-          url: urlBase + "/ScaleLogs",
+          url: urlBase + "/Scalelogs",
           method: "PUT"
         },
 
         /**
          * @ngdoc method
-         * @name lbServices.ScaleLog#exists
-         * @methodOf lbServices.ScaleLog
+         * @name lbServices.Scalelog#exists
+         * @methodOf lbServices.Scalelog
          *
          * @description
          *
@@ -4471,14 +4306,14 @@ module.factory(
          *  - `exists` – `{boolean=}` - 
          */
         "exists": {
-          url: urlBase + "/ScaleLogs/:id/exists",
+          url: urlBase + "/Scalelogs/:id/exists",
           method: "GET"
         },
 
         /**
          * @ngdoc method
-         * @name lbServices.ScaleLog#findById
-         * @methodOf lbServices.ScaleLog
+         * @name lbServices.Scalelog#findById
+         * @methodOf lbServices.Scalelog
          *
          * @description
          *
@@ -4502,18 +4337,18 @@ module.factory(
          *
          * <em>
          * (The remote method definition does not provide any description.
-         * This usually means the response is a `ScaleLog` object.)
+         * This usually means the response is a `Scalelog` object.)
          * </em>
          */
         "findById": {
-          url: urlBase + "/ScaleLogs/:id",
+          url: urlBase + "/Scalelogs/:id",
           method: "GET"
         },
 
         /**
          * @ngdoc method
-         * @name lbServices.ScaleLog#find
-         * @methodOf lbServices.ScaleLog
+         * @name lbServices.Scalelog#find
+         * @methodOf lbServices.Scalelog
          *
          * @description
          *
@@ -4535,19 +4370,19 @@ module.factory(
          *
          * <em>
          * (The remote method definition does not provide any description.
-         * This usually means the response is a `ScaleLog` object.)
+         * This usually means the response is a `Scalelog` object.)
          * </em>
          */
         "find": {
           isArray: true,
-          url: urlBase + "/ScaleLogs",
+          url: urlBase + "/Scalelogs",
           method: "GET"
         },
 
         /**
          * @ngdoc method
-         * @name lbServices.ScaleLog#findOne
-         * @methodOf lbServices.ScaleLog
+         * @name lbServices.Scalelog#findOne
+         * @methodOf lbServices.Scalelog
          *
          * @description
          *
@@ -4569,18 +4404,18 @@ module.factory(
          *
          * <em>
          * (The remote method definition does not provide any description.
-         * This usually means the response is a `ScaleLog` object.)
+         * This usually means the response is a `Scalelog` object.)
          * </em>
          */
         "findOne": {
-          url: urlBase + "/ScaleLogs/findOne",
+          url: urlBase + "/Scalelogs/findOne",
           method: "GET"
         },
 
         /**
          * @ngdoc method
-         * @name lbServices.ScaleLog#updateAll
-         * @methodOf lbServices.ScaleLog
+         * @name lbServices.Scalelog#updateAll
+         * @methodOf lbServices.Scalelog
          *
          * @description
          *
@@ -4607,14 +4442,14 @@ module.factory(
          * The number of instances updated
          */
         "updateAll": {
-          url: urlBase + "/ScaleLogs/update",
+          url: urlBase + "/Scalelogs/update",
           method: "POST"
         },
 
         /**
          * @ngdoc method
-         * @name lbServices.ScaleLog#deleteById
-         * @methodOf lbServices.ScaleLog
+         * @name lbServices.Scalelog#deleteById
+         * @methodOf lbServices.Scalelog
          *
          * @description
          *
@@ -4636,18 +4471,18 @@ module.factory(
          *
          * <em>
          * (The remote method definition does not provide any description.
-         * This usually means the response is a `ScaleLog` object.)
+         * This usually means the response is a `Scalelog` object.)
          * </em>
          */
         "deleteById": {
-          url: urlBase + "/ScaleLogs/:id",
+          url: urlBase + "/Scalelogs/:id",
           method: "DELETE"
         },
 
         /**
          * @ngdoc method
-         * @name lbServices.ScaleLog#count
-         * @methodOf lbServices.ScaleLog
+         * @name lbServices.Scalelog#count
+         * @methodOf lbServices.Scalelog
          *
          * @description
          *
@@ -4672,14 +4507,14 @@ module.factory(
          *  - `count` – `{number=}` - 
          */
         "count": {
-          url: urlBase + "/ScaleLogs/count",
+          url: urlBase + "/Scalelogs/count",
           method: "GET"
         },
 
         /**
          * @ngdoc method
-         * @name lbServices.ScaleLog#prototype$updateAttributes
-         * @methodOf lbServices.ScaleLog
+         * @name lbServices.Scalelog#prototype$updateAttributes
+         * @methodOf lbServices.Scalelog
          *
          * @description
          *
@@ -4705,18 +4540,18 @@ module.factory(
          *
          * <em>
          * (The remote method definition does not provide any description.
-         * This usually means the response is a `ScaleLog` object.)
+         * This usually means the response is a `Scalelog` object.)
          * </em>
          */
         "prototype$updateAttributes": {
-          url: urlBase + "/ScaleLogs/:id",
+          url: urlBase + "/Scalelogs/:id",
           method: "PUT"
         },
 
         /**
          * @ngdoc method
-         * @name lbServices.ScaleLog#createChangeStream
-         * @methodOf lbServices.ScaleLog
+         * @name lbServices.Scalelog#createChangeStream
+         * @methodOf lbServices.Scalelog
          *
          * @description
          *
@@ -4746,39 +4581,14 @@ module.factory(
          *  - `changes` – `{ReadableStream=}` - 
          */
         "createChangeStream": {
-          url: urlBase + "/ScaleLogs/change-stream",
+          url: urlBase + "/Scalelogs/change-stream",
           method: "POST"
         },
 
-        // INTERNAL. Use Scale.log() instead.
-        "::get::Scale::log": {
-          url: urlBase + "/Scales/:id/log",
+        // INTERNAL. Use Scale.scalelogs() instead.
+        "::get::Scale::scalelogs": {
+          url: urlBase + "/Scales/:id/scalelogs",
           method: "GET"
-        },
-
-        // INTERNAL. Use Scale.log.create() instead.
-        "::create::Scale::log": {
-          url: urlBase + "/Scales/:id/log",
-          method: "POST"
-        },
-
-        // INTERNAL. Use Scale.log.createMany() instead.
-        "::createMany::Scale::log": {
-          isArray: true,
-          url: urlBase + "/Scales/:id/log",
-          method: "POST"
-        },
-
-        // INTERNAL. Use Scale.log.update() instead.
-        "::update::Scale::log": {
-          url: urlBase + "/Scales/:id/log",
-          method: "PUT"
-        },
-
-        // INTERNAL. Use Scale.log.destroy() instead.
-        "::destroy::Scale::log": {
-          url: urlBase + "/Scales/:id/log",
-          method: "DELETE"
         },
       }
     );
@@ -4787,8 +4597,8 @@ module.factory(
 
         /**
          * @ngdoc method
-         * @name lbServices.ScaleLog#updateOrCreate
-         * @methodOf lbServices.ScaleLog
+         * @name lbServices.Scalelog#updateOrCreate
+         * @methodOf lbServices.Scalelog
          *
          * @description
          *
@@ -4815,15 +4625,15 @@ module.factory(
          *
          * <em>
          * (The remote method definition does not provide any description.
-         * This usually means the response is a `ScaleLog` object.)
+         * This usually means the response is a `Scalelog` object.)
          * </em>
          */
         R["updateOrCreate"] = R["upsert"];
 
         /**
          * @ngdoc method
-         * @name lbServices.ScaleLog#update
-         * @methodOf lbServices.ScaleLog
+         * @name lbServices.Scalelog#update
+         * @methodOf lbServices.Scalelog
          *
          * @description
          *
@@ -4853,8 +4663,8 @@ module.factory(
 
         /**
          * @ngdoc method
-         * @name lbServices.ScaleLog#destroyById
-         * @methodOf lbServices.ScaleLog
+         * @name lbServices.Scalelog#destroyById
+         * @methodOf lbServices.Scalelog
          *
          * @description
          *
@@ -4876,15 +4686,15 @@ module.factory(
          *
          * <em>
          * (The remote method definition does not provide any description.
-         * This usually means the response is a `ScaleLog` object.)
+         * This usually means the response is a `Scalelog` object.)
          * </em>
          */
         R["destroyById"] = R["deleteById"];
 
         /**
          * @ngdoc method
-         * @name lbServices.ScaleLog#removeById
-         * @methodOf lbServices.ScaleLog
+         * @name lbServices.Scalelog#removeById
+         * @methodOf lbServices.Scalelog
          *
          * @description
          *
@@ -4906,7 +4716,7 @@ module.factory(
          *
          * <em>
          * (The remote method definition does not provide any description.
-         * This usually means the response is a `ScaleLog` object.)
+         * This usually means the response is a `Scalelog` object.)
          * </em>
          */
         R["removeById"] = R["deleteById"];
@@ -4914,14 +4724,50 @@ module.factory(
 
     /**
     * @ngdoc property
-    * @name lbServices.ScaleLog#modelName
-    * @propertyOf lbServices.ScaleLog
+    * @name lbServices.Scalelog#modelName
+    * @propertyOf lbServices.Scalelog
     * @description
     * The name of the model represented by this $resource,
-    * i.e. `ScaleLog`.
+    * i.e. `Scalelog`.
     */
-    R.modelName = "ScaleLog";
+    R.modelName = "Scalelog";
 
+
+        /**
+         * @ngdoc method
+         * @name lbServices.Scalelog#items
+         * @methodOf lbServices.Scalelog
+         *
+         * @description
+         *
+         * Fetches belongsTo relation items.
+         *
+         * @param {Object=} parameters Request parameters.
+         *
+         *  - `id` – `{*}` - PersistedModel id
+         *
+         *  - `refresh` – `{boolean=}` - 
+         *
+         * @param {function(Object,Object)=} successCb
+         *   Success callback with two arguments: `value`, `responseHeaders`.
+         *
+         * @param {function(Object)=} errorCb Error callback with one argument:
+         *   `httpResponse`.
+         *
+         * @returns {Object} An empty reference that will be
+         *   populated with the actual data once the response is returned
+         *   from the server.
+         *
+         * <em>
+         * (The remote method definition does not provide any description.
+         * This usually means the response is a `Reagent` object.)
+         * </em>
+         */
+        R.items = function() {
+          var TargetResource = $injector.get("Reagent");
+          var action = TargetResource["::get::Scalelog::items"];
+          return action.apply(R, arguments);
+        };
 
     return R;
   }]);

@@ -35,7 +35,10 @@
     "scalelogs": {
       "type": "belongsTo",
       "model": "Scalelog",
-      "foreignKey": "scalelog_id"
+      "foreignKey": "scalelog_id",
+      "scope":{
+        "include":"items"
+      }
     }
   },
   "acls": [],

@@ -72,7 +72,9 @@
 .sending .progress-bar{
     background-color : #ED5565 !important;
 }
-
+.offline {
+  -webkit-filter: blur(2px);
+}
 </style>
 <div class="row  border-bottom white-bg dashboard-header">
 
@@ -93,9 +95,9 @@
     <div class="col-md-8 col-sm-12" style="padding-top: 30px;margin-bottom:30px">
         <div class="row" ng-repeat="(j,scales) in scalesShelf">
             <div class="col-md-3 col-sm-3" ng-repeat="(i,scale) in scales">
-                <div class="ibox"">
-                    <div class="ibox-content{{stateStyle(scale.state)}}"  ng-init="percent=(scale.weight / scale.full * 100) || 0" ng-click="scaleDetail(scale)" ng-class="scale.isselected===false?'unhighlight':''">
-                        <h5>{{scale.weight}}</h5>
+                <div class="ibox">
+                    <div class="ibox-content{{stateStyle(scale.status)}}"  ng-init="percent=(scale.scalelogs.weight / scale.scalelogs.full * 100) || 0" ng-click="scaleDetail(scale)" ng-class="scale.isselected===false?'unhighlight':''">
+                        <h5>{{scale.scalelogs.items.name}}({{scale.scalelogs.weight}}kg)</h5>
                         <h2>{{floor(percent)}}%</h2>
                         <div class="progress progress-mini" >
                             <div style="width: {{floor(percent)}}%;" class="progress-bar" ></div>
@@ -106,7 +108,6 @@
             </div>
         </div>
     </div>
-
     <!--架子结束-->
 
 

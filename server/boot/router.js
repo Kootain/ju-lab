@@ -3,13 +3,14 @@ var bodyParser = require('body-parser');
 
 module.exports = function(app) {
   var router = app.loopback.Router();
-  var Scale = require('../module/scale/onlineScale')(app);
+  var scale = require('../module/scale/Scale')(app);
+
   router.get('/status', app.loopback.status());
 
   router.get('/env/devices',function(req,res,value){
   	//TODO use native api
-    var onlines = app.scaleAction.getRegisteredList() || [];
-    var unKnown = app.scaleAction.getUnregisteredList() || [];
+    var onlines = scale.getRegisteredList() || [];
+    var unKnown = scale.getUnregisteredList() || [];
 
     var data={
       'online':onlines,
