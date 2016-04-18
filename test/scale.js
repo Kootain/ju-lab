@@ -4,25 +4,25 @@ var LOOP_TIME = 10000;
 var PORT = 8122;
 var obj =[{
   sid: '11',
-  weight: 30
+  weight: 12.42
 },{
   sid: '12',
-  weight: 20
+  weight: 1.32
 },{
   sid: '15',
-  weight: 40
+  weight: 14.32
 },{
   sid: '10',
-  weight: 50
+  weight: 2.32
 },{
   sid: '1e',
-  weight: 50
+  weight: 10.23
 },{
   sid: '21',
-  weight: 30
+  weight: 4.12
 },{
   sid: '22',
-  weight: 40
+  weight: 11.2
 }];
 
 var server = net.createServer((socket) => {

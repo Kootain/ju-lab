@@ -28,25 +28,6 @@ function mainCtrl($scope, Scale,notify) {
   　　}
   　　return pwd;
   }
-  tools.outputShelf = function(reagentsShelf){
-    var a=[];
-    for(var i = 0; i<webConfig.shelfY; i++){
-      a[i] = new Array(webConfig.shelfX);
-      for(var j =0; j<webConfig.shelfX; j++){
-        a[i][j] = {
-          reagent_name : '空',
-          state : 0,
-          isselected : 1,
-          name : '空',
-          pos : i*webConfig.shelfX + j
-        }
-      }
-    }
-    for(var i=0;i<reagentsShelf.length;i++){
-      a[Math.floor(reagentsShelf[i].pos/webConfig.shelfX)][reagentsShelf[i].pos%webConfig.shelfX] = reagentsShelf[i];
-    }
-    return a;
-  };
 
   $scope.commingSoon=function(){
     tools.notify('alert-info','this function will come soon.');

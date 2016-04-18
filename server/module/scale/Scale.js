@@ -57,7 +57,12 @@ module.exports = function(app) {
     try{
       newData = JSON.parse(newData.substr(0,newData.length-1));
     }catch(e){
-      newData = JSON.parse(newData);
+      try{
+        newData = JSON.parse(newData);
+      }catch(e){
+        newDate=[];
+        console.log(error);
+      }
     }
     for(var i in registeredList){
       var tmp = newData.find((e)=>{

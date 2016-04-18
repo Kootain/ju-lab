@@ -36,8 +36,8 @@
       "type": "belongsTo",
       "model": "Scalelog",
       "foreignKey": "scalelog_id",
-      "scope":{
-        "include":"items"
+      "scope": {
+        "include": "items"
       }
     }
   },
