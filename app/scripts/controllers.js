@@ -929,26 +929,26 @@ function scaleOverviewCtrl($scope, $http, $modal, $timeout){
   };
 
   //称上物品状态
-  $scope.stateStyle = function(state){
+  $scope.stateStyle = function(scaleStatus,logStatus){
     var style = "";
-    if(state==1) style="";      //普通展示状态
-    if(state==2) style=" new";     //称上新换物品
-    if(state==3) style=" low";     //称上物品紧缺
-    if(state==4) style=" sending";   //补货中
-    if(state==0||state==null) style=" offline";
+    if(logStatus==0) style="";      //普通展示状态
+    if(logStatus==1) style=" low";     //称上物品紧缺
+    if(logStatus==2) style=" sending";   //补货中
+    if(scaleStatus==2) style=" new";     //称上新换物品
+    if(scaleStatus==0||scaleStatus==null) style=" offline";
     return style;
   };
 }
 
 function reagentOverviewCtrl($scope, $http, $modal, RfidInfo, Weight, Scale, Item, Reagent, Email){
-  
   //称上物品状态
-  $scope.stateStyle = function(state){
+  $scope.stateStyle = function(scaleStatus,logStatus){
     var style = "";
-    if(state==0) style="";      //普通展示状态
-    if(state==1) style=" new";     //称上新换物品
-    if(state==2) style=" low";     //称上物品紧缺
-    if(state==3) style=" sending";   //补货中
+    if(logStatus==0) style="";      //普通展示状态
+    if(logStatus==1) style=" low";     //称上物品紧缺
+    if(logStatus==2) style=" sending";   //补货中
+    if(scaleStatus==2) style=" new";     //称上新换物品
+    if(scaleStatus==0||scaleStatus==null) style=" offline";
     return style;
   };
 
@@ -1030,7 +1030,7 @@ function reagentOverviewCtrl($scope, $http, $modal, RfidInfo, Weight, Scale, Ite
       $scope.latestSearchedReagent[x].gmt_visited=new Date($scope.latestSearchedReagent[x].gmt_visited);
     }
   });
-
+  $a=$scope;
   //自动查询
   var FREQUENCY=9000;//query data per 1s.
   setInterval(function(){
@@ -1106,7 +1106,6 @@ function reagentOverviewCtrl($scope, $http, $modal, RfidInfo, Weight, Scale, Ite
       $scope.reagentsShelf[Math.floor(list[i]/4)][list[i]%4].isselected = true;
     }
   }
- 
 };
 
 function chartJsCtrl() {

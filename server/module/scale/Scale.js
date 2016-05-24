@@ -15,25 +15,21 @@ tools.clone = function(o){
 
 module.exports = function(app) {
 
-  var statusChange = function(scale){
-    if(scale.scalelogs.weight/scale.scalelogs.full >= LOW_PERCENT){
-      if(scale.status != 1){
-        scale.status =1;
-        mScale.upsert(scale,()=>{
-          console.log('change status!');
-        });
+  var changeStatus = (scalelog)=>{
+    if(scalelog.weight/scalelog.full >= LOW_PERCENT){
+      if(!scalelog.stauts){
+        scalelog.status = 0;
+        return 0;
       }
-    }
-    if(scale.scalelogs.weight/scale.scalelogs.full < LOW_PERCENT){  //low
-      if(scale.status != 3&&scale.status != 4){
-        scale.status = 3;
-        mScale.upsert(scale,()=>{
-          console.log('change status!');
-        });
+      return scalelog.status;
+    }else{
+      if(scalelog.status == 0){   //切换至缺货状态
+        scalelog.status == 1;
+        return 1;
       }
-      return;
+      return scalelog.status;
     }
-  };
+  }
 
   var mScale = app.models.Scale,
       mWeight = app.models.Weight,
@@ -52,7 +48,7 @@ module.exports = function(app) {
     });
   }
 
-  var aa = (newData)=>{
+  var checkChange = (newData)=>{
     newData = newData.toString();
     try{
       newData = JSON.parse(newData.substr(0,newData.length-1));
@@ -81,13 +77,11 @@ module.exports = function(app) {
       }
       if (tmp.weight != registeredList[i].scalelogs.weight){
         registeredList[i].scalelogs.weight = tmp.weight;
-        statusChange(registeredList[i]);
         mScalelog.upsert(registeredList[i].scalelogs
         ,(data)=>{
           console.log('log weight success!');
         });
       }else{
-        statusChange(registeredList[i]); //TODD  
         delete newData[newData.indexOf(tmp)];
       }
     }
@@ -117,8 +111,6 @@ module.exports = function(app) {
   }
 
   getRegisterData();
-
-  // var loop = setInterval(checkChange, TIMEOUT, [null,registeredList]);
   
   //秤配置改变监听维护列表
   mScalelog.observe('after save', function updateOnlineList(ctx, next) {
@@ -147,20 +139,28 @@ module.exports = function(app) {
         log_id: ctx.instance.id,
         time : new Date()
       });
+      next();
     }else{
+      mScalelog.find({where:ctx.where},(err,data)=>{
+        for(i in ctx.data){
+          data[0][i]=ctx.data[i];
+        }
+        ctx.data.status = changeStatus(data[0]);
+        next();
+      });
       mWeight.create({
         weight: ctx.data.weight,
         log_id: ctx.data.id,
         time : new Date()
       });
     }
-    next();
+
   });
 
   return {
     registerScale : registerScale,          
     getRegisteredList : getRegisteredList,     
     getUnregisteredList : getUnregisteredList,
-    checkChange : aa
+    checkChange : checkChange
   }
 }

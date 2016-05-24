@@ -19,14 +19,18 @@
     "weight": {
       "type": "number",
       "comments": "当前重量"
+    },
+    "status": {
+      "type": "number",
+      "comments": "0:正常,1:缺货, 2:补货中"
     }
   },
   "validations": [],
   "relations": {
-    "items":{
-      "type":"belongsTo",
-      "model":"Reagent",
-      "foreignKey":"item_id"
+    "items": {
+      "type": "belongsTo",
+      "model": "Reagent",
+      "foreignKey": "item_id"
     }
   },
   "acls": [],
