@@ -67,5 +67,8 @@
     "public": true,
     "$promise": {},
     "$resolved": true
+  },
+  "Email": {
+    "dataSource": "emailDs"
   }
 }

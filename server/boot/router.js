@@ -27,7 +27,6 @@ module.exports = function(app) {
 
   router.post('/mail',function(req, res, value){
     var yourEmailAddress = dsConfig.emailDs.transports[0].auth.user;
-        //console.log(req);
     app.models.Email.send({
       to: req.body.to,
       from: yourEmailAddress,

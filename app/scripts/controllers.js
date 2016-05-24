@@ -180,38 +180,23 @@ function scalePageCtrl($scope, $modal, $http, $modalInstance, Scale, Weight, Rea
 
   $scope.reagentUsage=[];
 
-  Weight.find({filter:{
-      where:{
-        item_id : $scope.reagentScale.id,
-        gmt_created: {gt:$scope.from,lt:$scope.to}  //TODO
-      }
-    }
-  },function(val){
-    $scope.reagentUsage.push(
-      {
-        data: val.map(function(e,b){
-          //TODO map b as x axis, stand for date
-          return [b,e.value];
-        }),
-        label:$scope.reagentScale.reagent_name
-      }
-    );
-  })
-
+  //获取秤上物品列表
   $scope.itemList=[];
   Reagent.find({},function(val){
     $scope.itemList = val;
   });
+  //获取在线未注册设备
   $http.get('env/devices').then((res)=>{
     $scope.unKnowList=res.data.unKnown;
   },(res)=>{
-
+    console.log('Get unKnown device error!');
   });
+  $a= $scope;
 
-  $scope.itemChanged = 0;
-  $scope.scaleChanged = 0;
-
-  $a= Scale;
+  //前台选择后的item_id，scale_id
+  $scope.itemChanged = ($scope.reagentScale.hasOwnProperty('scalelogs'))?$scope.reagentScale.scalelogs.item_id:0;
+  $scope.scaleChanged = $scope.reagentScale.sid||0;
+  $scope.fullChanged = ($scope.reagentScale.hasOwnProperty('scalelogs'))?$scope.reagentScale.scalelogs.full:0;
 
   $scope.saveScale = function(){
     console.log('save');
@@ -237,9 +222,61 @@ function scalePageCtrl($scope, $modal, $http, $modalInstance, Scale, Weight, Rea
       },scale,function(val, resHeader){
          tools.notify('alert-success', 'Update success');
       },function(err){
-        tools.notify('alert-danger', res.data.error.message);
+        tools.notify('alert-danger', err.data.error.message);
       });
     });      
+  }
+
+  $scope.saveFull = (scale)=>{
+    Scalelog.update({
+      where: {id : scale.scalelogs.id}
+    },{full: $scope.fullChanged},(val, resHeader)=>{
+      tools.notify('alert-success', 'Update success');
+    },(err)=>{
+      tools.notify('alert-danger', err.data.error.message);
+    });
+  }
+  $scope.buy = (scale)=>{
+    console.log(scale);
+    var html = `<table  border="1">
+      <tr>
+        <td>称名</td> <td>{0}</td>
+      </tr>
+      <tr>
+        <td>试剂名称</td> <td>{1}</td>
+      </tr>
+      <tr>
+        <td>试剂余量</td> <td>{2}KG</td>
+      </tr>
+      <tr>
+        <td>试剂满重</td><td>{3}KG</td>
+      </tr>
+      <tr>
+        <td>试剂栏位</td> <td>{4}</td>
+      </tr>
+      <tr>
+        <td>实验室名称</td> <td>{5}</td>
+      </tr>
+      <tr>
+        <td>订单时间</td><td>{6}</td>
+      </tr>
+    </table>`.format(scale.name,scale.scalelogs.items.name,scale.scalelogs.weight,scale.scalelogs.full,scale.pos,'Julab',new Date().format("yyyy-MM-dd hh:mm"));
+    message = {
+      to: "gaoty@qq.com",
+      data: html
+    }
+    $http.post('/mail',message).
+      success(function(data, status, headers, config){
+        console.log('> email post to server');
+        tools.notify('alert-success','订单已成功发出！');
+        data = {
+          state : 3
+        };
+        Scale.updateAll({where : {id : scale.id}}, data, function(){});
+      }).
+      error(function(data, status, headers, config){
+        console.log(status);
+      });
   }
       //TODO if there is no data in weight error
       //TODO device list should content device's id
@@ -1069,48 +1106,7 @@ function reagentOverviewCtrl($scope, $http, $modal, RfidInfo, Weight, Scale, Ite
       $scope.reagentsShelf[Math.floor(list[i]/4)][list[i]%4].isselected = true;
     }
   }
-
-  $scope.buy= function (scale){
-    var html = `<table  border="1">
-      <tr>
-        <td>称名</td> <td>{0}</td>
-      </tr>
-      <tr>
-        <td>试剂名称</td> <td>{1}</td>
-      </tr>
-      <tr>
-        <td>试剂余量</td> <td>{2}KG</td>
-      </tr>
-      <tr>
-        <td>试剂满重</td><td>{3}KG</td>
-      </tr>
-      <tr>
-        <td>试剂栏位</td> <td>{4}</td>
-      </tr>
-      <tr>
-        <td>实验室名称</td> <td>{5}</td>
-      </tr>
-      <tr>
-        <td>订单时间</td><td>{6}</td>
-      </tr>
-    </table>`.format(scale.name,scale.item.name,scale.value,scale.full_weight,scale.pos,'Julab',new Date().format("yyyy-MM-dd hh:mm"));
-    message = {
-      to: "gaoty@qq.com",
-      data: html
-    }
-    $http.post('/mail',message).
-      success(function(data, status, headers, config){
-        console.log('> email post to server');
-        tools.notify('alert-success','订单已成功发出！');
-        data = {
-          state : 3
-        };
-        Scale.updateAll({where : {id : scale.id}}, data, function(){});
-      }).
-      error(function(data, status, headers, config){
-        console.log(status);
-      });
-  }
+ 
 };
 
 function chartJsCtrl() {

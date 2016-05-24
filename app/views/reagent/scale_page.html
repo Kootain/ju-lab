@@ -39,10 +39,14 @@
                         <a class="btn btn-rounded btn-primary" ng-click="saveItem(reagentScale)">修改物品</a>
                     </div>
                     <select ng-model="scaleChanged" ng-options="scale as scale.sid for scale in unKnowList">
-                        <option value="">{{reagentScale.reagent_name}}</option>
+                        <option value="">{{reagentScale.reagent_name||scaleChanged}}</option>
                      </select>
                      <div style="margin:10px">
                         <a class="btn btn-rounded btn-primary" ng-click="saveScale(reagentScale)">绑定称</a>
+                    </div>
+                    <input ng-model="fullChanged" size = "8"/>
+                    <div style="margin:10px">
+                        <a class="btn btn-rounded btn-primary" ng-click="saveFull(reagentScale)">更改满重</a>
                     </div>
                  </div>
                 <div class="col-md-9">

@@ -20,5 +20,22 @@
     "name": "routerold",
     "user": "root",
     "connector": "mysql"
+  },
+  "emailDs": {
+    "name": "emailDs",
+    "connector": "mail",
+    "transports": [{
+      "type": "smtp",
+      "host": "smtp.163.com",
+      "secure": true,
+      "port": 465,
+      "tls": {
+        "rejectUnauthorized": false
+      },
+      "auth": {
+        "user": "kootain@163.com",
+        "pass": "730060163"
+      }
+    }]
   }
 }
