@@ -26,21 +26,10 @@ module.exports = function(app) {
   }));
 
   router.post('/mail',function(req, res, value){
-    var yourEmailAddress = dsConfig.emailDs.transports[0].auth.user;
-    app.models.Email.send({
-      to: req.body.to,
-      from: yourEmailAddress,
-      subject: '聚缘实验室订单',
-      html: req.body.data
-      //html: '<strong>HTML</strong> tags are converted'
-    }, function(err) {
-      if (err) throw err;
-      console.log('> email sent successfully');
-      res.json({
-        status:1
-      });
+    console.log(req.body);      
+    res.json({
+        status:app.stockoutMail(req.body,1)
     });
-
   });
 
   router.get('')

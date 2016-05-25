@@ -27,7 +27,7 @@
     },
     "status": {
       "type": "number",
-      "comments": "称是否在线"
+      "comments": "0:称不在线 1:称在线 2:称上物品未初始化"
     }
   },
   "validations": [],

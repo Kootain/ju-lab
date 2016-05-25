@@ -15,6 +15,11 @@ tools.clone = function(o){
 
 module.exports = function(app) {
 
+  var mReagent = app.models.Reagent,
+      mScale = app.models.Scale,
+      mWeight = app.models.Weight,
+      mScalelog = app.models.Scalelog;
+
   var changeStatus = (scalelog)=>{
     if(scalelog.weight/scalelog.full >= LOW_PERCENT){
       if(!scalelog.stauts){
@@ -24,16 +29,22 @@ module.exports = function(app) {
       return scalelog.status;
     }else{
       if(scalelog.status == 0){   //切换至缺货状态
+        mReagent.find({where:{id:scalelog.item_id}},(err,data)=>{
+          scale={};
+          scale.scalelogs={};
+          for(i in scalelog){
+            scale.scalelogs[i] = scalelog[i];
+          }
+          scale.scalelogs.items = data[0];
+          console.log(scale);
+          app.stockoutMail(scale); //发送缺货提醒
+        });
         scalelog.status == 1;
         return 1;
       }
       return scalelog.status;
     }
   }
-
-  var mScale = app.models.Scale,
-      mWeight = app.models.Weight,
-      mScalelog = app.models.Scalelog;
 
   var getRegisterData = function(){
     mScale.find({include:'scalelogs'},function(err,data){

@@ -28,6 +28,15 @@ function mainCtrl($scope, Scale,notify) {
   　　}
   　　return pwd;
   }
+  tools.stateStyle = function(scaleStatus,logStatus){
+    var style = "";
+    if(logStatus==0) style="";      //普通展示状态
+    if(logStatus==1) style=" low";     //称上物品紧缺
+    if(logStatus==2) style=" sending";   //补货中
+    if(scaleStatus==2) style=" new";     //称上新换物品
+    if(scaleStatus==0||scaleStatus==null) style=" offline";
+    return style;
+  };
 
   $scope.commingSoon=function(){
     tools.notify('alert-info','this function will come soon.');
@@ -237,42 +246,14 @@ function scalePageCtrl($scope, $modal, $http, $modalInstance, Scale, Weight, Rea
     });
   }
   $scope.buy = (scale)=>{
-    console.log(scale);
-    var html = `<table  border="1">
-      <tr>
-        <td>称名</td> <td>{0}</td>
-      </tr>
-      <tr>
-        <td>试剂名称</td> <td>{1}</td>
-      </tr>
-      <tr>
-        <td>试剂余量</td> <td>{2}KG</td>
-      </tr>
-      <tr>
-        <td>试剂满重</td><td>{3}KG</td>
-      </tr>
-      <tr>
-        <td>试剂栏位</td> <td>{4}</td>
-      </tr>
-      <tr>
-        <td>实验室名称</td> <td>{5}</td>
-      </tr>
-      <tr>
-        <td>订单时间</td><td>{6}</td>
-      </tr>
-    </table>`.format(scale.name,scale.scalelogs.items.name,scale.scalelogs.weight,scale.scalelogs.full,scale.pos,'Julab',new Date().format("yyyy-MM-dd hh:mm"));
-    message = {
-      to: "gaoty@qq.com",
-      data: html
-    }
-    $http.post('/mail',message).
+    $http.post('/mail',scale).
       success(function(data, status, headers, config){
         console.log('> email post to server');
         tools.notify('alert-success','订单已成功发出！');
         data = {
-          state : 3
+          status : 3
         };
-        Scale.updateAll({where : {id : scale.id}}, data, function(){});
+        Scalelog.updateAll({where : {id : scale.scalelogs.id}}, data, function(){});
       }).
       error(function(data, status, headers, config){
         console.log(status);
@@ -929,28 +910,12 @@ function scaleOverviewCtrl($scope, $http, $modal, $timeout){
   };
 
   //称上物品状态
-  $scope.stateStyle = function(scaleStatus,logStatus){
-    var style = "";
-    if(logStatus==0) style="";      //普通展示状态
-    if(logStatus==1) style=" low";     //称上物品紧缺
-    if(logStatus==2) style=" sending";   //补货中
-    if(scaleStatus==2) style=" new";     //称上新换物品
-    if(scaleStatus==0||scaleStatus==null) style=" offline";
-    return style;
-  };
+  $scope.stateStyle = tools.stateStyle;
 }
 
 function reagentOverviewCtrl($scope, $http, $modal, RfidInfo, Weight, Scale, Item, Reagent, Email){
   //称上物品状态
-  $scope.stateStyle = function(scaleStatus,logStatus){
-    var style = "";
-    if(logStatus==0) style="";      //普通展示状态
-    if(logStatus==1) style=" low";     //称上物品紧缺
-    if(logStatus==2) style=" sending";   //补货中
-    if(scaleStatus==2) style=" new";     //称上新换物品
-    if(scaleStatus==0||scaleStatus==null) style=" offline";
-    return style;
-  };
+  $scope.stateStyle =tools.stateStyle;
 
   $scope.floor=window.Math.floor;
   $scope.from=new Date();
