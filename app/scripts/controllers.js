@@ -221,8 +221,8 @@ function scalePageCtrl($scope, $modal, $http, $modalInstance, Scale, Weight, Rea
     console.log(scale);
     var data={
       "item_id": $scope.itemChanged,
-      "full": scale.weight||scale.scalelogs.weight,
-      "weight": scale.weight||scale.scalelogs.weight
+      "full": (scale.hasOwnProperty('scalelogs'))?scale.scalelogs.weight:scale.weight,
+      "weight": (scale.hasOwnProperty('scalelogs'))?scale.scalelogs.full:scale.weight
       };
     Scalelog.create(data,(data,hearder)=>{
       scale.scalelog_id = data.id;
