@@ -68,7 +68,7 @@ module.exports = function(app) {
         newData = JSON.parse(newData);
       }catch(e){
         newDate=[];
-        console.log(error);
+        console.log(e);
       }
     }
     for(var i in registeredList){
